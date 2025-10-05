@@ -1,0 +1,11 @@
+# Sample Dataset for Linear Regression Examples
+# 
+# This CSV file contains sample data for demonstrating linear regression
+# 
+# TODO: Add actual sample data
+# Columns: feature1, feature2, feature3, target
+# Example format:
+# feature1,feature2,feature3,target
+# 1.0,2.0,3.0,6.5
+# 2.0,3.0,4.0,9.2
+# ...
