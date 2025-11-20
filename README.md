@@ -148,68 +148,75 @@ y = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ + ε
 ```
 Where β₀ is intercept, β₁...βₙ are coefficients, ε is error
 
-#### Transition to Matrix Form
+## Transition to Matrix Form
 
-For $m$ samples and $n$ features, we use matrices for efficient computation:
+To handle many samples efficiently, we rewrite linear regression using matrices.
 
-- **Feature matrix** ($\mathbf{X}$):
-   $$
-   \mathbf{X} = \begin{bmatrix}
-   x_{1,1} & x_{1,2} & \dots & x_{1,n} \\
-   x_{2,1} & x_{2,2} & \dots & x_{2,n} \\
-   \vdots & \vdots & & \vdots \\
-   x_{m,1} & x_{m,2} & \dots & x_{m,n}
-   \end{bmatrix}
-   $$
+### Feature Matrix
+For $m$ samples and $n$ features, the feature matrix $\mathbf{X}$ is:
+$$
+\mathbf{X} =
+\begin{bmatrix}
+x_{11} & x_{12} & \dots & x_{1n} \\
+x_{21} & x_{22} & \dots & x_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{m1} & x_{m2} & \dots & x_{mn}
+\end{bmatrix}
+$$
+Each row represents a sample, each column a feature.
 
-- **Intercept column**: Add a column of ones to $\mathbf{X}$ to get $\mathbf{X'}$ for $β₀$:
-   $$
-   \mathbf{X'} = \begin{bmatrix}
-   1 & x_{1,1} & x_{1,2} & \dots & x_{1,n} \\
-   1 & x_{2,1} & x_{2,2} & \dots & x_{2,n} \\
-   \vdots & \vdots & & \vdots \\
-   1 & x_{m,1} & x_{m,2} & \dots & x_{m,n}
-   \end{bmatrix}
-   $$
+### Adding Intercept Column
+To include the intercept term $\beta_0$, we prepend a column of ones to $\mathbf{X}$, forming $\mathbf{X'}$:
+$$
+\mathbf{X}' =
+\begin{bmatrix}
+1 & x_{11} & x_{12} & \dots & x_{1n} \\
+1 & x_{21} & x_{22} & \dots & x_{2n} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & x_{m1} & x_{m2} & \dots & x_{mn}
+\end{bmatrix}
+$$
+This allows the model to learn an intercept.
 
-- **Coefficient vector** ($\boldsymbol{\beta}$):
-   $$
-   \boldsymbol{\beta} = \begin{bmatrix}
-   β₀ \\
-   β₁ \\
-   β₂ \\
-   \vdots \\
-   βₙ
-   \end{bmatrix}
-   $$
+### Coefficient Vector
+The coefficients (including intercept) are stored in a vector $\boldsymbol{\beta}$:
+$$
+\boldsymbol{\beta} = \begin{bmatrix}
+  \beta_0 \\
+  \beta_1 \\
+  \beta_2 \\
+  \vdots \\
+  \beta_n
+\end{bmatrix}
+$$
 
-- **Target vector** ($\mathbf{y}$):
-   $$
-   \mathbf{y} = \begin{bmatrix}
-   y_1 \\
-   y_2 \\
-   \vdots \\
-   y_m
-   \end{bmatrix}
-   $$
+### Target Vector
+The target values are stored in a vector $\mathbf{y}$:
+$$
+\mathbf{y} = \begin{bmatrix}
+  y_1 \\
+  y_2 \\
+  \vdots \\
+  y_m
+\end{bmatrix}
+$$
 
-The matrix form of the model is:
+### Matrix Form of the Model
+The matrix form of linear regression is:
 $$
 \mathbf{y} = \mathbf{X'} \boldsymbol{\beta} + \boldsymbol{\epsilon}
 $$
-
 Where:
 - $\mathbf{y}$ is the vector of all target values
 - $\mathbf{X'}$ is the feature matrix with intercept column
 - $\boldsymbol{\beta}$ is the vector of all coefficients
 - $\boldsymbol{\epsilon}$ is the vector of errors
 
-**Why matrices?**  
+### Why Matrices?
 Matrix multiplication allows us to compute predictions for all samples efficiently:
 $$
 \hat{\mathbf{y}} = \mathbf{X'} \boldsymbol{\beta}
 $$
-
 This is the foundation for both the normal equation and gradient descent implementations in code.
 
 #### Gradient Descent Optimization  
