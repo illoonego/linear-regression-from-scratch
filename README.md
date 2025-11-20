@@ -55,7 +55,7 @@ linear-regression-from-scratch/
 ├── notebooks/                      ← 🚧 Jupyter tutorials (planned)
 ├── docs/                           ← Documentation
 │   ├── mathematical_background.md  ← Theory and equations
-│   └── api_reference.md           ← API documentation
+│   └── api_reference.md            ← API documentation
 └── DEVELOPMENT.md                  ← Development workflow
 ```
 
@@ -147,6 +147,70 @@ print(f"R² Score: {model.r2_score(price, predictions):.4f}")
 y = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ + ε
 ```
 Where β₀ is intercept, β₁...βₙ are coefficients, ε is error
+
+#### Transition to Matrix Form
+
+For $m$ samples and $n$ features, we use matrices for efficient computation:
+
+- **Feature matrix** ($\mathbf{X}$):
+   $$
+   \mathbf{X} = \begin{bmatrix}
+   x_{1,1} & x_{1,2} & \dots & x_{1,n} \\
+   x_{2,1} & x_{2,2} & \dots & x_{2,n} \\
+   \vdots & \vdots & & \vdots \\
+   x_{m,1} & x_{m,2} & \dots & x_{m,n}
+   \end{bmatrix}
+   $$
+
+- **Intercept column**: Add a column of ones to $\mathbf{X}$ to get $\mathbf{X'}$ for $β₀$:
+   $$
+   \mathbf{X'} = \begin{bmatrix}
+   1 & x_{1,1} & x_{1,2} & \dots & x_{1,n} \\
+   1 & x_{2,1} & x_{2,2} & \dots & x_{2,n} \\
+   \vdots & \vdots & & \vdots \\
+   1 & x_{m,1} & x_{m,2} & \dots & x_{m,n}
+   \end{bmatrix}
+   $$
+
+- **Coefficient vector** ($\boldsymbol{\beta}$):
+   $$
+   \boldsymbol{\beta} = \begin{bmatrix}
+   β₀ \\
+   β₁ \\
+   β₂ \\
+   \vdots \\
+   βₙ
+   \end{bmatrix}
+   $$
+
+- **Target vector** ($\mathbf{y}$):
+   $$
+   \mathbf{y} = \begin{bmatrix}
+   y_1 \\
+   y_2 \\
+   \vdots \\
+   y_m
+   \end{bmatrix}
+   $$
+
+The matrix form of the model is:
+$$
+\mathbf{y} = \mathbf{X'} \boldsymbol{\beta} + \boldsymbol{\epsilon}
+$$
+
+Where:
+- $\mathbf{y}$ is the vector of all target values
+- $\mathbf{X'}$ is the feature matrix with intercept column
+- $\boldsymbol{\beta}$ is the vector of all coefficients
+- $\boldsymbol{\epsilon}$ is the vector of errors
+
+**Why matrices?**  
+Matrix multiplication allows us to compute predictions for all samples efficiently:
+$$
+\hat{\mathbf{y}} = \mathbf{X'} \boldsymbol{\beta}
+$$
+
+This is the foundation for both the normal equation and gradient descent implementations in code.
 
 #### Gradient Descent Optimization  
 ```
