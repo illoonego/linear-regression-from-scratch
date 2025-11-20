@@ -41,8 +41,9 @@ linear-regression-from-scratch/
 │   ├── preprocessing/              ← Data preprocessing tools
 │   │   ├── __init__.py 
 │   │   └── standart_scaler.py      ← ✅ StandardScaler (complete)
-│   └── optimizers/                 ← 🚧 Optimization algorithms (planned)
-│       └── __init__.py
+│   ├── utils/                      ← Utility functions (train/test split, etc.)
+│   │   ├── __init__.py
+│   │   └── data_split.py           ← ✅ train_test_split (complete)
 ├── tests/                          ← Test suite
 │   ├── __init__.py
 │   ├── test_linear_regression.py   ← ✅ LinearRegression tests
