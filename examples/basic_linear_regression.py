@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from linear_regression.models.linear_regression import LinearRegression
 from linear_regression.preprocessing import StandartScaler
 from linear_regression.utils import train_test_split
+from linear_regression.metrics import mean_squared_error, r2_score
 
 def example_1d_simple():
     """Example of simple linear regression with 1D data."""
@@ -53,11 +54,11 @@ def example_1d_simple():
     y_pred_test = model.predict(X_test_scaled)
 
     # Evaluate performance
-    r2_train = model.r2_score(y_train, y_pred_train)
-    mse_train = model.mean_squared_error(y_train, y_pred_train)
+    r2_train = r2_score(y_train, y_pred_train)
+    mse_train = mean_squared_error(y_train, y_pred_train)
 
-    r2_test = model.r2_score(y_test, y_pred_test)
-    mse_test = model.mean_squared_error(y_test, y_pred_test)
+    r2_test = r2_score(y_test, y_pred_test)
+    mse_test = mean_squared_error(y_test, y_pred_test)
 
     # Unsclae weights to original scale
     weight_unscaled = model.weights_[1] / scaler.std_[0]
@@ -117,10 +118,10 @@ def example_2d_multiple():
     y_pred_test = model.predict(X_test_scaled)
 
     # Evaluate performance
-    r2_train = model.r2_score(y_train, y_pred_train)
-    r2_test = model.r2_score(y_test, y_pred_test)
-    mse_train = model.mean_squared_error(y_train, y_pred_train)
-    mse_test = model.mean_squared_error(y_test, y_pred_test)
+    r2_train = r2_score(y_train, y_pred_train)
+    r2_test = r2_score(y_test, y_pred_test)
+    mse_train = mean_squared_error(y_train, y_pred_train)
+    mse_test = mean_squared_error(y_test, y_pred_test)
 
     # Unsclae weights to original scale
     weight_unscaled = model.weights_[1] / scaler.std_[0]

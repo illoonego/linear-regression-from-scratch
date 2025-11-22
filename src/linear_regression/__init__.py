@@ -9,6 +9,7 @@ __email__ = "your.email@example.com"
 
 from .preprocessing import StandartScaler
 from .utils import train_test_split
+from .metrics import mean_squared_error, r2_score
 from .models.linear_regression import LinearRegression
 from .models.polynomial_regression import PolynomialRegression
 
@@ -16,5 +17,7 @@ __all__ = [
     "LinearRegression",
     "PolynomialRegression",
     "StandartScaler",
-    "train_test_split"
+    "train_test_split",
+    "mean_squared_error",
+    "r2_score"
 ]
