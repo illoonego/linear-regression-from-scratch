@@ -7,6 +7,8 @@ for simple and multiple linear regression tasks.
 import numpy as np
 import matplotlib.pyplot as plt
 from linear_regression.models.linear_regression import LinearRegression
+from linear_regression.preprocessing.standart_scaler import StandartScaler
+from linear_regression.utils import train_test_split
 
 def example_1d_simple():
     """Example of simple linear regression with 1D data."""
@@ -15,30 +17,61 @@ def example_1d_simple():
 
     # Generate synthetic data
     print("\nGenerating synthetic data...")
-    X = np.array([[1], [2], [3], [4], [5]])
+    X = np.arange(100).reshape(-1, 1) # reshape for 1D feature
     slope = 2.0
     intercept = 3.0
-    y_true = slope * X.flatten() + intercept + np.random.randn(5)  # y = 2x + 3 + noise
+    y_true = slope * X.flatten() + intercept + np.random.randn(100)  # y = 2x + 3 + noise
     print(f"Data points: {len(X)}")
     print(f"True weights: slope={slope}, intercept={intercept}")
 
+    # Split data into training and testing sets
+    print("\nSplitting data into training and testing sets...")
+    X_train, X_test, y_train, y_test = train_test_split(X, y_true, test_size=0.2, random_state=42)
+
+    # Preprocess features
+    print("\nPreprocessing features with StandardScaler...")
+    scaler = StandartScaler()
+    print("Fitting scaler on training data...")
+    scaler.fit(X_train)
+    print("Scaler fitted on training data!")
+
+    print("Transforming training and testing data...")
+    X_train_scaled = scaler.transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    print("Data transformation completed!")
+
     # Create and train model
-    model = LinearRegression(learning_rate=0.01, n_iterations=2500, fit_intercept=True)
+    model = LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
     method = 'gradient_descent'
 
     print(f"\nTraining model with {method.replace('_', ' ').title()}...\n")
-    model.fit(X, y_true, method=method)
+    model.fit(X_train_scaled, y_train, method=method)
     print("\nTraining completed!")
 
-    # Make predictions and evaluate results
-    y_pred = model.predict(X)
-    r2 = model.r2_score(y_true, y_pred)
-    mse = model.mean_squared_error(y_true, y_pred)
+    # Make predictions
+    y_pred_train = model.predict(X_train_scaled)
+    y_pred_test = model.predict(X_test_scaled)
+
+    # Evaluate performance
+    r2_train = model.r2_score(y_train, y_pred_train)
+    mse_train = model.mean_squared_error(y_train, y_pred_train)
+
+    r2_test = model.r2_score(y_test, y_pred_test)
+    mse_test = model.mean_squared_error(y_test, y_pred_test)
+
+    # Unsclae weights to original scale
+    weight_unscaled = model.weights_[1] / scaler.std_[0]
+    intercept_unscaled = model.weights_[0] - (weight_unscaled * scaler.mean_[0])
 
     print(f"\nResults:")
-    print(f"Learned weights: slope={model.weights_[1]:.2f}, intercept={model.weights_[0]:.2f}")
-    print(f"R² Score:        {r2:.4f}")
-    print(f"MSE:             {mse:.4f}")
+    print(f"Training Set - R² Score: {r2_train:.4f}, MSE: {mse_train:.4f}")
+    print(f"Testing Set  - R² Score: {r2_test:.4f}, MSE: {mse_test:.4f}")
+
+    print(f"\nComparison of the weights:")
+    print(f"True weights: slope={slope}, intercept={intercept}")
+    print(f"Learned weights (original scale): slope={weight_unscaled:.2f}, intercept={intercept_unscaled:.2f}")
+    print(f"Learning weights (scaled): slope={model.weights_[1]:.2f}, intercept={model.weights_[0]:.2f}")
+    print(f"Error (original scale):   slope={abs(slope - weight_unscaled):.2f}, intercept={abs(intercept - intercept_unscaled):.2f}")
 
 def example_2d_multiple():
     """Example of multiple linear regression with 2D data."""
@@ -56,28 +89,53 @@ def example_2d_multiple():
     print(f"Data points: {len(X)}")
     print("True weights: size coefficient=150, bedroom coefficient=10000, intercept=20000")
 
+    # Split data into training and testing sets
+    print("\nSplitting data into training and testing sets...")
+    X_train, X_test, y_train, y_test = train_test_split(X, price, test_size=0.2, random_state=42)
+
+    # Preprocess features
+    print("\nPreprocessing features with StandardScaler...")
+    scaler = StandartScaler()
+    
+    print("Fitting scaler on training data...")
+    scaler.fit(X_train)
+
+    print("Transforming training and testing data...")
+    X_train_scaled = scaler.transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
     # Create and train model
-    model = LinearRegression(learning_rate=0.0000001, n_iterations=5000, fit_intercept=True)
+    model = LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
     method = 'gradient_descent'
 
     print(f"\nTraining model with {method.replace('_', ' ').title()}...\n")
-    model.fit(X, price, method=method)
+    model.fit(X_train_scaled, y_train, method=method)
     print("\nTraining completed!")
 
-    # Make predictions and evaluate results
-    price_pred = model.predict(X)
-    r2 = model.r2_score(price, price_pred)
-    mse = model.mean_squared_error(price, price_pred)
+    # Make predictions
+    y_pred_train = model.predict(X_train_scaled)
+    y_pred_test = model.predict(X_test_scaled)
+
+    # Evaluate performance
+    r2_train = model.r2_score(y_train, y_pred_train)
+    r2_test = model.r2_score(y_test, y_pred_test)
+    mse_train = model.mean_squared_error(y_train, y_pred_train)
+    mse_test = model.mean_squared_error(y_test, y_pred_test)
+
+    # Unsclae weights to original scale
+    weight_unscaled = model.weights_[1] / scaler.std_[0]
+    bedroom_unscaled = model.weights_[2] / scaler.std_[1]
+    intercept_unscaled = model.weights_[0] - (weight_unscaled * scaler.mean_[0]) - (bedroom_unscaled * scaler.mean_[1])
 
     print(f"\nResults:")
-    print(f"Learned weights: size coefficient={model.weights_[1]:.2f}, bedroom coefficient={model.weights_[2]:.2f}, intercept={model.weights_[0]:.2f}")
-    print(f"R² Score:        {r2:.4f}")
-    print(f"MSE:             {mse:.4f}")
+    print(f"Training Set - R² Score: {r2_train:.4f}, MSE: {mse_train:.4f}")
+    print(f"Testing Set  - R² Score: {r2_test:.4f}, MSE: {mse_test:.4f}")
     
-    print(f"\nComparison with True Values:")
-    print(f"True:    size=150.00, bedroom=10000.00, intercept=20000.00")
-    print(f"Learned: size={model.weights_[1]:.2f}, bedroom={model.weights_[2]:.2f}, intercept={model.weights_[0]:.2f}")
-    print(f"Error:   size={abs(150 - model.weights_[1]):.2f}, bedroom={abs(10000 - model.weights_[2]):.2f}, intercept={abs(20000 - model.weights_[0]):.2f}")
+    print(f"\nComparison of the weights:")
+    print(f"True weights:    size=150.00, bedroom=10000.00, intercept=20000.00")
+    print(f"Learned weights (scaled): size={model.weights_[1]:.2f}, bedroom={model.weights_[2]:.2f}, intercept={model.weights_[0]:.2f}")
+    print(f"Learned weights (original scale): size={weight_unscaled:.2f}, bedroom={bedroom_unscaled:.2f}, intercept={intercept_unscaled:.2f}\n")
+    print(f"Error (original scale):   size={abs(150 - weight_unscaled):.2f}, bedroom={abs(10000 - bedroom_unscaled):.2f}, intercept={abs(20000 - intercept_unscaled):.2f}")
 
 def main():
     """Run basic linear regression examples."""
