@@ -7,7 +7,7 @@ for simple and multiple linear regression tasks.
 import numpy as np
 import matplotlib.pyplot as plt
 from linear_regression.models.linear_regression import LinearRegression
-from linear_regression.preprocessing.standart_scaler import StandartScaler
+from linear_regression.preprocessing import StandartScaler
 from linear_regression.utils import train_test_split
 
 def example_1d_simple():
