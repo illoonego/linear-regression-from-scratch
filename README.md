@@ -1,15 +1,5 @@
 # Linear Regression from Scratch
 
-A clean, educational implementation of linear regression algorithms built from scratch using only NumPy and standard Python libraries.
-
-## 🎯 Project Overview
-
-This project implements linear regression algorithms without using high-level machine learning libraries like scikit-learn. It's designed for educational purposes to understand the mathematical foundations and implementation details of linear regression.
-
-## 📁 Project Structure
-
-# Linear Regression from Scratch
-
 A production-quality, educational implementation of linear regression algorithms built from scratch using NumPy. This library provides clean, well-documented implementations for learning the mathematical foundations of linear regression while maintaining professional-grade code quality.
 
 ## 🎯 Project Overview
@@ -38,12 +28,9 @@ linear-regression-from-scratch/
 │   │   ├── __init__.py
 │   │   ├── linear_regression.py    ← ✅ LinearRegression (complete)
 │   │   └── polynomial_regression.py ← 🚧 PolynomialRegression (planned)
-│   ├── preprocessing/              ← Data preprocessing tools
-│   │   ├── __init__.py 
-│   │   └── standart_scaler.py      ← ✅ StandardScaler (complete)
-│   ├── utils/                      ← Utility functions (train/test split, etc.)
-│   │   ├── __init__.py
-│   │   └── data_split.py           ← ✅ train_test_split (complete)
+│   ├── preprocessing.py            ← ✅ StandardScaler (complete)
+│   ├── utils.py                    ← ✅ train_test_split (complete)
+│   ├── metrics.py                  ← ✅ Metrics (R², MSE, MAE)
 ├── tests/                          ← Test suite
 │   ├── __init__.py
 │   ├── test_linear_regression.py   ← ✅ LinearRegression tests
@@ -97,7 +84,8 @@ linear-regression-from-scratch/
 #### Simple Linear Regression
 ```python
 from linear_regression.models.linear_regression import LinearRegression
-from linear_regression.preprocessing.standart_scaler import StandartScaler
+from linear_regression.preprocessing import StandartScaler
+from linear_regression.metrics import r2_score
 import numpy as np
 
 # Create sample data
@@ -110,7 +98,7 @@ model.fit(X, y, method='gradient_descent')
 predictions = model.predict(X)
 
 print(f"Weights: {model.weights_}")
-print(f"R² Score: {model.r2_score(y, predictions):.4f}")
+print(f"R² Score: {r2_score(y, predictions):.4f}")
 
 # Option 2: With preprocessing  
 scaler = StandartScaler()
@@ -129,13 +117,15 @@ X = np.column_stack((size_sqft, bedrooms))
 # True relationship: price = 150*size + 10000*bedrooms + 20000 + noise
 price = 150 * size_sqft + 10000 * bedrooms + 20000 + np.random.randn(100) * 10000
 
+predictions = model.predict(X)
 model = LinearRegression(learning_rate=1e-7, n_iterations=5000)
 model.fit(X, price)
 predictions = model.predict(X)
 
 print(f"Learned coefficients: {model.weights_[1:]}")  # [size_coef, bedroom_coef]
 print(f"Intercept: {model.weights_[0]}")
-print(f"R² Score: {model.r2_score(price, predictions):.4f}")
+from linear_regression.metrics import r2_score
+print(f"R² Score: {r2_score(price, predictions):.4f}")
 ```
 
 ## 🧮 Mathematical Foundations
@@ -154,7 +144,7 @@ To handle many samples efficiently, we rewrite linear regression using matrices.
 
 ### Feature Matrix
 For $m$ samples and $n$ features, the feature matrix $\mathbf{X}$ is:
-$$
+```math
 \mathbf{X} =
 \begin{bmatrix}
 x_{11} & x_{12} & \dots & x_{1n} \\
@@ -162,12 +152,12 @@ x_{21} & x_{22} & \dots & x_{2n} \\
 \vdots & \vdots & \ddots & \vdots \\
 x_{m1} & x_{m2} & \dots & x_{mn}
 \end{bmatrix}
-$$
+```
 Each row represents a sample, each column a feature.
 
 ### Adding Intercept Column
 To include the intercept term $\beta_0$, we prepend a column of ones to $\mathbf{X}$, forming $\mathbf{X'}$:
-$$
+```math
 \mathbf{X}' =
 \begin{bmatrix}
 1 & x_{11} & x_{12} & \dots & x_{1n} \\
@@ -175,12 +165,12 @@ $$
 \vdots & \vdots & \vdots & \ddots & \vdots \\
 1 & x_{m1} & x_{m2} & \dots & x_{mn}
 \end{bmatrix}
-$$
+```
 This allows the model to learn an intercept.
 
 ### Coefficient Vector
 The coefficients (including intercept) are stored in a vector $\boldsymbol{\beta}$:
-$$
+```math
 \boldsymbol{\beta} = \begin{bmatrix}
   \beta_0 \\
   \beta_1 \\
@@ -188,24 +178,24 @@ $$
   \vdots \\
   \beta_n
 \end{bmatrix}
-$$
+```
 
 ### Target Vector
 The target values are stored in a vector $\mathbf{y}$:
-$$
+```math
 \mathbf{y} = \begin{bmatrix}
   y_1 \\
   y_2 \\
   \vdots \\
   y_m
 \end{bmatrix}
-$$
+```
 
 ### Matrix Form of the Model
 The matrix form of linear regression is:
-$$
+```math
 \mathbf{y} = \mathbf{X'} \boldsymbol{\beta} + \boldsymbol{\epsilon}
-$$
+```
 Where:
 - $\mathbf{y}$ is the vector of all target values
 - $\mathbf{X'}$ is the feature matrix with intercept column
