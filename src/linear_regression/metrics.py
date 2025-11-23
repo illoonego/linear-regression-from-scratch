@@ -16,15 +16,7 @@ def r2_score(y_true, y_pred):
         """
         
         # ===== INPUT VALIDATION =====
-        # Convert to numpy arrays
-        y_true = np.array(y_true)
-        y_pred = np.array(y_pred)
-        if y_true.shape != y_pred.shape:
-            raise ValueError("y_true and y_pred must have the same shape")
-        
-        # Check edge case of empty arrays
-        if len(y_true) == 0:
-            raise ValueError("Cannot compute R² for empty arrays")
+        y_true, y_pred = _validate_input(y_true, y_pred)
         
         # ===== R² CALCULATION =====
         # Calculate residual sum of squares
@@ -51,15 +43,7 @@ def mean_squared_error(y_true, y_pred):
         """
 
         # ===== INPUT VALIDATION =====
-        # Convert to numpy arrays
-        y_true = np.array(y_true)
-        y_pred = np.array(y_pred)
-        if y_true.shape != y_pred.shape:
-            raise ValueError("y_true and y_pred must have the same shape")
-        
-        # Check edge case of empty arrays
-        if len(y_true) == 0:
-            raise ValueError("Cannot compute MSE for empty arrays")
+        y_true, y_pred = _validate_input(y_true, y_pred)
 
         # ===== MSE CALCULATION =====
         # Return mean squared error
@@ -78,6 +62,23 @@ def mean_absolute_error(y_true, y_pred):
 
         # ===== INPUT VALIDATION =====
         # Convert to numpy arrays
+        y_true, y_pred = _validate_input(y_true, y_pred)
+        
+        # ===== MAE CALCULATION =====
+        # Return mean absolute error
+        return np.mean(np.abs(y_true - y_pred))
+
+def _validate_input(y_true, y_pred):
+        """Validate input arrays for metrics functions.
+
+        Args:
+            y_true (np.ndarray): True values
+            y_pred (np.ndarray): Predicted values
+
+        Raises:
+            ValueError: If input arrays have different shapes or are empty
+        """
+        # Convert to numpy arrays
         y_true = np.array(y_true)
         y_pred = np.array(y_pred)
         if y_true.shape != y_pred.shape:
@@ -85,8 +86,6 @@ def mean_absolute_error(y_true, y_pred):
         
         # Check edge case of empty arrays
         if len(y_true) == 0:
-            raise ValueError("Cannot compute MAE for empty arrays")
+            raise ValueError("Input arrays cannot be empty")
         
-        # ===== MAE CALCULATION =====
-        # Return mean absolute error
-        return np.mean(np.abs(y_true - y_pred))
+        return y_true, y_pred
