@@ -8,21 +8,6 @@ from linear_regression.models.linear_regression import LinearRegression
 class TestLinearRegression:
     """Test cases for LinearRegression class."""
     
-    @pytest.fixture
-    def sample_data(self):
-        """Create sample data for testing."""
-        np.random.seed(42)  # Reproducible noise
-        X = np.array([[1], [2], [3], [4], [5]])
-        slope = 2.0
-        intercept = 3.0
-        y = slope * X.flatten() + intercept + np.random.randn(5)  # y = 2x + 3 + noise
-        return X, y
-    
-    @pytest.fixture
-    def model(self):
-        """Create a LinearRegression model instance."""
-        return LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
-    
     def test_initialization(self):
         """Test model initialization."""
         # Test 1: Default parameters
@@ -53,34 +38,19 @@ class TestLinearRegression:
         assert model_custom.is_fitted_ is False
         assert model_custom.n_features_ is None
 
-    def test_fit_gradient_descent(self, model, sample_data):
+    def test_fit_gradient_descent(self, model, synthetic_data):
         """Test fitting with gradient descent."""
         # TODO: Test gradient descent fitting
         pass
     
-    def test_fit_normal_equation(self, model, sample_data):
+    def test_fit_normal_equation(self, model, synthetic_data):
         """Test fitting with normal equation."""
         # TODO: Test normal equation fitting
         pass
     
-    def test_predict(self, model, sample_data):
+    def test_predict(self, model, synthetic_data):
         """Test prediction functionality."""
         # TODO: Test predictions
-        pass
-    
-    def test_score(self, model, sample_data):
-        """Test R² score calculation."""
-        # TODO: Test R² score
-        pass
-    
-    def test_mean_squared_error(self, model):
-        """Test MSE calculation."""
-        # TODO: Test MSE calculation
-        pass
-    
-    def test_mean_absolute_error(self, model):
-        """Test MAE calculation."""
-        # TODO: Test MAE calculation
         pass
     
     def test_add_intercept(self, model):
