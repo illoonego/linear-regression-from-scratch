@@ -36,9 +36,14 @@ dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
     "black>=22.0.0",
-    "flake8>=4.0.0",
     "isort>=5.0.0",
+    "ruff>=0.1.0"
 ]
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "I"]
+ignore = []
+src = ["src", "tests"]
 notebooks = [
     "jupyter>=1.0.0",
     "notebook>=6.4.0",
@@ -61,7 +66,7 @@ where = ["src"]
 
 [tool.black]
 line-length = 88
-target-version = ['py38']
+target-version = ['py38', 'py39', 'py310', 'py311']
 include = '\.pyi?$'
 
 [tool.isort]
