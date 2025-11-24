@@ -51,7 +51,7 @@ docs = [
     "sphinx-rtd-theme>=1.0.0",
 ]
 [tool.ruff]
-line-length = 88
+line-length = 140
 select = ["E", "F", "I"]
 ignore = []
 src = ["src", "tests"]
@@ -65,14 +65,14 @@ src = ["src", "tests"]
 where = ["src"]
 
 [tool.black]
-line-length = 88
+line-length = 140
 target-version = ['py38', 'py39', 'py310', 'py311']
 include = '\.pyi?$'
 
 [tool.isort]
 profile = "black"
 multi_line_output = 3
-line_length = 88
+line_length = 140
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
