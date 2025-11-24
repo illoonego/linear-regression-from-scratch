@@ -40,8 +40,11 @@ class TestLinearRegression:
 
     def test_fit_gradient_descent(self, model, synthetic_data):
         """Test fitting with gradient descent."""
-        # TODO: Test gradient descent fitting
-        pass
+        X, y = synthetic_data
+        model.fit(X, y, method='gradient_descent')
+        assert model.is_fitted_ is True
+        assert model.weights_ is not None
+        assert len(model.cost_history_) == model.n_iterations
 
     def test_fit_normal_equation(self, model, synthetic_data):
         """Test fitting with normal equation."""
@@ -50,8 +53,10 @@ class TestLinearRegression:
 
     def test_predict(self, model, synthetic_data):
         """Test prediction functionality."""
-        # TODO: Test predictions
-        pass
+        X, y = synthetic_data
+        model.fit(X, y, method='gradient_descent')
+        predictions = model.predict(X)
+        assert predictions.shape == y.shape
 
     def test_add_intercept(self, model):
         """Test intercept addition."""
