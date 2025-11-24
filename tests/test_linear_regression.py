@@ -41,7 +41,7 @@ class TestLinearRegression:
     def test_fit_gradient_descent(self, model, synthetic_data):
         """Test fitting with gradient descent."""
         X, y = synthetic_data
-        model.fit(X, y, method='gradient_descent')
+        model.fit(X, y, method="gradient_descent")
         assert model.is_fitted_ is True
         assert model.weights_ is not None
         assert len(model.cost_history_) == model.n_iterations
@@ -54,7 +54,7 @@ class TestLinearRegression:
     def test_predict(self, model, synthetic_data):
         """Test prediction functionality."""
         X, y = synthetic_data
-        model.fit(X, y, method='gradient_descent')
+        model.fit(X, y, method="gradient_descent")
         predictions = model.predict(X)
         assert predictions.shape == y.shape
 
