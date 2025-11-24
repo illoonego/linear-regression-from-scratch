@@ -5,12 +5,11 @@ for fitting polynomial curves to data.
 """
 
 
-
 def main():
     """Run polynomial regression examples."""
     print("Polynomial Regression from Scratch - Example")
     print("=" * 50)
-    
+
     # TODO: Implement polynomial regression example
     # Example structure:
     # 1. Generate non-linear synthetic data
@@ -18,7 +17,7 @@ def main():
     # 3. Compare performance
     # 4. Visualize fitted curves
     # 5. Demonstrate overfitting with high degrees
-    
+
     pass
 
 

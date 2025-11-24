@@ -19,5 +19,5 @@ __all__ = [
     "StandartScaler",
     "train_test_split",
     "mean_squared_error",
-    "r2_score"
+    "r2_score",
 ]

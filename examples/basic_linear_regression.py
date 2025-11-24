@@ -19,7 +19,7 @@ def example_1d_simple():
 
     # Generate synthetic data
     print("\nGenerating synthetic data...")
-    X = np.arange(100).reshape(-1, 1) # reshape for 1D feature
+    X = np.arange(100).reshape(-1, 1)  # reshape for 1D feature
     slope = 2.0
     intercept = 3.0
     y_true = slope * X.flatten() + intercept + np.random.randn(100)  # y = 2x + 3 + noise
@@ -44,7 +44,7 @@ def example_1d_simple():
 
     # Create and train model
     model = LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
-    method = 'gradient_descent'
+    method = "gradient_descent"
 
     print(f"\nTraining model with {method.replace('_', ' ').title()}...\n")
     model.fit(X_train_scaled, y_train, method=method)
@@ -75,6 +75,7 @@ def example_1d_simple():
     print(f"Learning weights (scaled): slope={model.weights_[1]:.2f}, intercept={model.weights_[0]:.2f}")
     print(f"Error (original scale):   slope={abs(slope - weight_unscaled):.2f}, intercept={abs(intercept - intercept_unscaled):.2f}")
 
+
 def example_2d_multiple():
     """Example of multiple linear regression with 2D data."""
     print("\n2D Multiple Linear Regression Example")
@@ -84,7 +85,7 @@ def example_2d_multiple():
     print("\nGenerating synthetic data...")
     np.random.seed(42)
     size_sqft = np.random.uniform(800, 2500, 100)  # Real house sizes
-    bedrooms = np.random.randint(1, 5, 100)        # Real bedroom counts
+    bedrooms = np.random.randint(1, 5, 100)  # Real bedroom counts
     X = np.column_stack((size_sqft, bedrooms))
     noise = np.random.randn(100) * 10000
     price = 150 * size_sqft + 10000 * bedrooms + 20000 + noise  # price = 150*size + 10000*bedrooms + 20000 + noise
@@ -98,7 +99,7 @@ def example_2d_multiple():
     # Preprocess features
     print("\nPreprocessing features with StandardScaler...")
     scaler = StandartScaler()
-    
+
     print("Fitting scaler on training data...")
     scaler.fit(X_train)
 
@@ -108,7 +109,7 @@ def example_2d_multiple():
 
     # Create and train model
     model = LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
-    method = 'gradient_descent'
+    method = "gradient_descent"
 
     print(f"\nTraining model with {method.replace('_', ' ').title()}...\n")
     model.fit(X_train_scaled, y_train, method=method)
@@ -132,7 +133,7 @@ def example_2d_multiple():
     print("\nResults:")
     print(f"Training Set - R² Score: {r2_train:.4f}, MSE: {mse_train:.4f}")
     print(f"Testing Set  - R² Score: {r2_test:.4f}, MSE: {mse_test:.4f}")
-    
+
     print("\nComparison of the weights:")
     print("True weights:    size=150.00, bedroom=10000.00, intercept=20000.00")
     print(f"Learned weights (scaled): size={model.weights_[1]:.2f}, bedroom={model.weights_[2]:.2f}, intercept={model.weights_[0]:.2f}")
@@ -147,17 +148,18 @@ def example_2d_multiple():
         f"intercept={abs(20000 - intercept_unscaled):.2f}"
     )
 
+
 def main():
     """Run basic linear regression examples."""
     import sys
-    
+
     print("\nLinear Regression from Scratch - Basic Example")
     print("=" * 50)
-    
+
     # Check command line arguments
     if len(sys.argv) > 1:
         example_type = sys.argv[1].lower()
-        
+
         if example_type == "1d":
             print("\n🎯 Running 1D example only...")
             example_1d_simple()
