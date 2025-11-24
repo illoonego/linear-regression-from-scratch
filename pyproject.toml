@@ -39,11 +39,6 @@ dev = [
     "isort>=5.0.0",
     "ruff>=0.1.0"
 ]
-[tool.ruff]
-line-length = 88
-select = ["E", "F", "I"]
-ignore = []
-src = ["src", "tests"]
 notebooks = [
     "jupyter>=1.0.0",
     "notebook>=6.4.0",
@@ -55,6 +50,11 @@ docs = [
     "sphinx>=4.0.0",
     "sphinx-rtd-theme>=1.0.0",
 ]
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "I"]
+ignore = []
+src = ["src", "tests"]
 
 [project.urls]
 "Homepage" = "https://github.com/yourusername/linear-regression-from-scratch"
