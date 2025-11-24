@@ -19,7 +19,7 @@ This project implements linear regression algorithms **from first principles** w
 ```
 linear-regression-from-scratch/
 ├── README.md                       ← You are here
-├── setup.py & pyproject.toml       ← Package configuration  
+├── pyproject.toml                  ← Package configuration (PEP 621)
 ├── requirements.txt                ← Dependencies
 ├── LICENSE                         ← MIT License
 ├── src/linear_regression/          ← Main package
@@ -30,10 +30,12 @@ linear-regression-from-scratch/
 │   │   └── polynomial_regression.py ← 🚧 PolynomialRegression (planned)
 │   ├── preprocessing.py            ← ✅ StandardScaler (complete)
 │   ├── utils.py                    ← ✅ train_test_split (complete)
-│   ├── metrics.py                  ← ✅ Metrics (R², MSE, MAE)
+│   └── metrics.py                  ← ✅ Metrics (R², MSE, MAE)
 ├── tests/                          ← Test suite
 │   ├── __init__.py
-│   ├── test_linear_regression.py   ← ✅ LinearRegression tests
+│   ├── conftest.py                 ← ✅ Shared pytest fixtures for all tests
+│   ├── test_linear_regression.py   ← ✅ LinearRegression tests (uses shared fixtures)
+│   ├── test_metrics.py             ← ✅ Metrics tests (uses shared fixtures)
 │   └── test_polynomial_regression.py ← 🚧 Polynomial tests (planned)
 ├── examples/                       ← Working examples & demos
 │   ├── basic_linear_regression.py  ← ✅ Complete examples
@@ -57,17 +59,17 @@ linear-regression-from-scratch/
 ### Installation
 
 1. **Clone & Setup:**
-   ```bash
-   git clone https://github.com/illoonego/linear-regression-from-scratch.git
-   cd linear-regression-from-scratch
-   
-   # Create virtual environment
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   
-   # Install in development mode
-   pip install -e .
-   ```
+  ```bash
+  git clone https://github.com/illoonego/linear-regression-from-scratch.git
+  cd linear-regression-from-scratch
+
+  # Create virtual environment
+  python -m venv venv
+  source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+  # Install in development mode using pyproject.toml
+  pip install -e .[dev]
+  ```
 
 2. **Run Examples:**
    ```bash
@@ -247,17 +249,20 @@ Where μ is mean, σ is standard deviation
 
 ## 🧪 Testing & Development
 
-### Run Tests
+### Run Tests & Coverage
 ```bash
 # Run all tests
 pytest tests/
 
-# Run with coverage  
-pytest tests/ --cov=src/linear_regression --cov-report=html
+# Run with coverage (see missing lines in terminal)
+pytest --cov=src/linear_regression --cov-report=term-missing
 
 # Run specific test file
 pytest tests/test_linear_regression.py -v
 ```
+
+### Continuous Integration (CI)
+This project uses GitHub Actions to automatically run tests, linting (ruff), formatting checks (black), and coverage reporting on every push and pull request. The workflow is defined in `.github/workflows/python-ci.yml` and tests against multiple Python versions.
 
 ### Code Quality
 ```bash
