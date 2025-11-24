@@ -4,6 +4,6 @@ from .linear_regression import LinearRegression
 from .polynomial_regression import PolynomialRegression
 
 __all__ = [
-	"LinearRegression",
-	"PolynomialRegression",
+    "LinearRegression",
+    "PolynomialRegression",
 ]
