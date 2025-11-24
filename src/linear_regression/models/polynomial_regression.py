@@ -4,8 +4,6 @@ This module contains the PolynomialRegression class that implements
 polynomial regression by extending linear regression with polynomial features.
 """
 
-import numpy as np
-from .linear_regression import LinearRegression
 
 
 class PolynomialRegression:

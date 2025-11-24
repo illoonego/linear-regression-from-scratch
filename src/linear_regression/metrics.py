@@ -4,6 +4,7 @@ of linear regression models."""
 
 import numpy as np
 
+
 def r2_score(y_true, y_pred):
         """Calculate R² score (coefficient of determination).
         

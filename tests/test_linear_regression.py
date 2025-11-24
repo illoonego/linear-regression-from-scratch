@@ -1,7 +1,7 @@
 """Tests for LinearRegression class."""
 
 import pytest
-import numpy as np
+
 from linear_regression.models.linear_regression import LinearRegression
 
 

@@ -1,6 +1,8 @@
-import pytest
 import numpy as np
-from linear_regression.metrics import r2_score, mean_squared_error, mean_absolute_error
+import pytest
+
+from linear_regression.metrics import mean_absolute_error, mean_squared_error, r2_score
+
 
 # === R² SCORE TESTS ===
 # Test perfect prediction

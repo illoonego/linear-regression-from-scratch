@@ -5,8 +5,9 @@ simple and multiple linear regression using gradient descent
 and normal equation methods.
 """
 
-import numpy as np
 import warnings
+
+import numpy as np
 
 
 class LinearRegression:

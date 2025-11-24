@@ -5,11 +5,12 @@ for simple and multiple linear regression tasks.
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
+
+from linear_regression.metrics import mean_squared_error, r2_score
 from linear_regression.models.linear_regression import LinearRegression
 from linear_regression.preprocessing import StandartScaler
 from linear_regression.utils import train_test_split
-from linear_regression.metrics import mean_squared_error, r2_score
+
 
 def example_1d_simple():
     """Example of simple linear regression with 1D data."""
@@ -64,11 +65,11 @@ def example_1d_simple():
     weight_unscaled = model.weights_[1] / scaler.std_[0]
     intercept_unscaled = model.weights_[0] - (weight_unscaled * scaler.mean_[0])
 
-    print(f"\nResults:")
+    print("\nResults:")
     print(f"Training Set - R² Score: {r2_train:.4f}, MSE: {mse_train:.4f}")
     print(f"Testing Set  - R² Score: {r2_test:.4f}, MSE: {mse_test:.4f}")
 
-    print(f"\nComparison of the weights:")
+    print("\nComparison of the weights:")
     print(f"True weights: slope={slope}, intercept={intercept}")
     print(f"Learned weights (original scale): slope={weight_unscaled:.2f}, intercept={intercept_unscaled:.2f}")
     print(f"Learning weights (scaled): slope={model.weights_[1]:.2f}, intercept={model.weights_[0]:.2f}")
@@ -128,15 +129,23 @@ def example_2d_multiple():
     bedroom_unscaled = model.weights_[2] / scaler.std_[1]
     intercept_unscaled = model.weights_[0] - (weight_unscaled * scaler.mean_[0]) - (bedroom_unscaled * scaler.mean_[1])
 
-    print(f"\nResults:")
+    print("\nResults:")
     print(f"Training Set - R² Score: {r2_train:.4f}, MSE: {mse_train:.4f}")
     print(f"Testing Set  - R² Score: {r2_test:.4f}, MSE: {mse_test:.4f}")
     
-    print(f"\nComparison of the weights:")
-    print(f"True weights:    size=150.00, bedroom=10000.00, intercept=20000.00")
+    print("\nComparison of the weights:")
+    print("True weights:    size=150.00, bedroom=10000.00, intercept=20000.00")
     print(f"Learned weights (scaled): size={model.weights_[1]:.2f}, bedroom={model.weights_[2]:.2f}, intercept={model.weights_[0]:.2f}")
-    print(f"Learned weights (original scale): size={weight_unscaled:.2f}, bedroom={bedroom_unscaled:.2f}, intercept={intercept_unscaled:.2f}\n")
-    print(f"Error (original scale):   size={abs(150 - weight_unscaled):.2f}, bedroom={abs(10000 - bedroom_unscaled):.2f}, intercept={abs(20000 - intercept_unscaled):.2f}")
+    print(
+        f"Learned weights (original scale): size={weight_unscaled:.2f}, "
+        f"bedroom={bedroom_unscaled:.2f}, "
+        f"intercept={intercept_unscaled:.2f}\n"
+    )
+    print(
+        f"Error (original scale):   size={abs(150 - weight_unscaled):.2f}, "
+        f"bedroom={abs(10000 - bedroom_unscaled):.2f}, "
+        f"intercept={abs(20000 - intercept_unscaled):.2f}"
+    )
 
 def main():
     """Run basic linear regression examples."""

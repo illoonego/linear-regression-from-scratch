@@ -1,8 +1,6 @@
 """Tests for PolynomialRegression class."""
 
 import pytest
-import numpy as np
-from linear_regression.models.polynomial_regression import PolynomialRegression
 
 
 class TestPolynomialRegression:

@@ -2,6 +2,7 @@
 
 import numpy as np
 
+
 def train_test_split(X, y, test_size=0.2, random_state=None):
     """Split data into training and testing sets.
 
@@ -31,7 +32,6 @@ def train_test_split(X, y, test_size=0.2, random_state=None):
     # Calculate split sizes
     n_samples = X.shape[0]
     n_test = int(n_samples * test_size) # round down to nearest integer
-    n_train = n_samples - n_test
 
     # Set random seed
     if random_state is not None:

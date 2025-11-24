@@ -1,8 +1,10 @@
 """File to set up test configurations."""
 
-import pytest
 import numpy as np
+import pytest
+
 from linear_regression.models.linear_regression import LinearRegression
+
 
 # Sample fixture for generating synthetic data
 @pytest.fixture

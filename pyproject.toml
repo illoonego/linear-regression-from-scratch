@@ -52,6 +52,7 @@ docs = [
 ]
 [tool.ruff]
 line-length = 140
+[lint]
 select = ["E", "F", "I"]
 ignore = []
 src = ["src", "tests"]
