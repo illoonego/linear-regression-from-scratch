@@ -16,45 +16,14 @@ This project implements linear regression algorithms **from first principles** w
 
 ## 📁 Project Architecture
 
-```
-linear-regression-from-scratch/
-├── README.md                       ← You are here
-├── pyproject.toml                  ← Package configuration (PEP 621)
-├── requirements.txt                ← Dependencies
-├── LICENSE                         ← MIT License
-├── src/linear_regression/          ← Main package
-│   ├── __init__.py                 ← Package initialization
-│   ├── models/                     ← ML model implementations  
-│   │   ├── __init__.py
-│   │   ├── linear_regression.py    ← ✅ LinearRegression (complete)
-│   │   └── polynomial_regression.py ← 🚧 PolynomialRegression (planned)
-│   ├── preprocessing.py            ← ✅ StandardScaler (complete)
-│   ├── utils.py                    ← ✅ train_test_split (complete)
-│   └── metrics.py                  ← ✅ Metrics (R², MSE, MAE)
-├── tests/                          ← Test suite
-│   ├── __init__.py
-│   ├── conftest.py                 ← ✅ Shared pytest fixtures for all tests
-│   ├── test_linear_regression.py   ← ✅ LinearRegression tests (uses shared fixtures)
-│   ├── test_metrics.py             ← ✅ Metrics tests (uses shared fixtures)
-│   └── test_polynomial_regression.py ← 🚧 Polynomial tests (planned)
-├── examples/                       ← Working examples & demos
-│   ├── basic_linear_regression.py  ← ✅ Complete examples
-│   ├── polynomial_regression_example.py ← 🚧 Planned
-│   └── data/                       ← Sample datasets
-├── notebooks/                      ← 🚧 Jupyter tutorials (planned)
-├── docs/                           ← Documentation
-│   ├── mathematical_background.md  ← Theory and equations
-│   └── api_reference.md            ← API documentation
-└── DEVELOPMENT.md                  ← Development workflow
-```
-
-**Legend**: ✅ Complete | 🚧 Planned/In Progress
+See the full project architecture in [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Python 3.8+ 
 - pip package manager
+
 
 ### Installation
 
@@ -67,9 +36,13 @@ linear-regression-from-scratch/
   python -m venv venv
   source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-  # Install in development mode using pyproject.toml
+  # Install all dependencies using pyproject.toml (PEP 621)
   pip install -e .[dev]
+  # For optional dependencies (notebooks, docs):
+  pip install -e ".[notebooks,docs]"
   ```
+
+> **Note:** All dependencies are now managed via `pyproject.toml`. The legacy `requirements.txt` file has been removed for clarity and modern Python packaging best practices.
 
 2. **Run Examples:**
    ```bash
@@ -129,106 +102,6 @@ print(f"Intercept: {model.weights_[0]}")
 from linear_regression.metrics import r2_score
 print(f"R² Score: {r2_score(price, predictions):.4f}")
 ```
-
-## 🧮 Mathematical Foundations
-
-### Core Algorithms Implemented
-
-#### Linear Regression Model
-```
-y = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ + ε
-```
-Where β₀ is intercept, β₁...βₙ are coefficients, ε is error
-
-## Transition to Matrix Form
-
-To handle many samples efficiently, we rewrite linear regression using matrices.
-
-### Feature Matrix
-For $m$ samples and $n$ features, the feature matrix $\mathbf{X}$ is:
-```math
-\mathbf{X} =
-\begin{bmatrix}
-x_{11} & x_{12} & \dots & x_{1n} \\
-x_{21} & x_{22} & \dots & x_{2n} \\
-\vdots & \vdots & \ddots & \vdots \\
-x_{m1} & x_{m2} & \dots & x_{mn}
-\end{bmatrix}
-```
-Each row represents a sample, each column a feature.
-
-### Adding Intercept Column
-To include the intercept term $\beta_0$, we prepend a column of ones to $\mathbf{X}$, forming $\mathbf{X'}$:
-```math
-\mathbf{X}' =
-\begin{bmatrix}
-1 & x_{11} & x_{12} & \dots & x_{1n} \\
-1 & x_{21} & x_{22} & \dots & x_{2n} \\
-\vdots & \vdots & \vdots & \ddots & \vdots \\
-1 & x_{m1} & x_{m2} & \dots & x_{mn}
-\end{bmatrix}
-```
-This allows the model to learn an intercept.
-
-### Coefficient Vector
-The coefficients (including intercept) are stored in a vector $\boldsymbol{\beta}$:
-```math
-\boldsymbol{\beta} = \begin{bmatrix}
-  \beta_0 \\
-  \beta_1 \\
-  \beta_2 \\
-  \vdots \\
-  \beta_n
-\end{bmatrix}
-```
-
-### Target Vector
-The target values are stored in a vector $\mathbf{y}$:
-```math
-\mathbf{y} = \begin{bmatrix}
-  y_1 \\
-  y_2 \\
-  \vdots \\
-  y_m
-\end{bmatrix}
-```
-
-### Matrix Form of the Model
-The matrix form of linear regression is:
-```math
-\mathbf{y} = \mathbf{X'} \boldsymbol{\beta} + \boldsymbol{\epsilon}
-```
-Where:
-- $\mathbf{y}$ is the vector of all target values
-- $\mathbf{X'}$ is the feature matrix with intercept column
-- $\boldsymbol{\beta}$ is the vector of all coefficients
-- $\boldsymbol{\epsilon}$ is the vector of errors
-
-### Why Matrices?
-Matrix multiplication allows us to compute predictions for all samples efficiently:
-$$
-\hat{\mathbf{y}} = \mathbf{X'} \boldsymbol{\beta}
-$$
-This is the foundation for both the normal equation and gradient descent implementations in code.
-
-#### Gradient Descent Optimization  
-```
-Cost: J(β) = (1/2m) × Σ(h(x⁽ⁱ⁾) - y⁽ⁱ⁾)²
-Update: β := β - α × (1/m) × Xᵀ(Xβ - y)
-```
-
-#### Feature Standardization
-```
-StandardScaler: x' = (x - μ) / σ
-```
-Where μ is mean, σ is standard deviation
-
-### Implementation Features
-- **Gradient Descent**: Iterative optimization with configurable learning rate
-- **Normal Equation**: Closed-form solution (planned implementation) 
-- **Robust Validation**: Comprehensive input validation and error handling
-- **Edge Cases**: Zero variance features, singular matrices, NaN/infinite values
-- **Performance Metrics**: R², MSE, MAE with mathematical correctness
 
 ## 📊 Current Features
 
@@ -325,6 +198,7 @@ This project demonstrates:
 ## 🤝 Contributing
 
 We welcome contributions! Please see:
+- [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and onboarding
 - [DEVELOPMENT.md](DEVELOPMENT.md) for development workflow
 - [Issues](https://github.com/illoonego/linear-regression-from-scratch/issues) for bug reports and feature requests
 

@@ -1,111 +1,115 @@
-# Development Commands
 
-## Setup Virtual Environment
+# Development Guide
 
+This document provides all the information needed for smooth development and collaboration on the linear-regression-from-scratch project.
+
+## Project Setup
+
+### Environment
+- Python 3.8+
+- All dependencies managed via `pyproject.toml` (PEP 621)
+- No `requirements.txt` or `setup.py` required
+
+### Installation
 ```bash
-# Create virtual environment
+# Create and activate virtual environment
 python -m venv venv
+source venv/bin/activate  # macOS/Linux
+# venv\Scripts\activate  # Windows
 
-# Activate virtual environment (macOS/Linux)
-source venv/bin/activate
-
-# Activate virtual environment (Windows)
-# venv\Scripts\activate
-
-# Install package in development mode
+# Install package and development dependencies
 pip install -e .
-
-# Install development dependencies
-pip install -e ".[dev]"
-
-# Install all dependencies (including notebooks)
 pip install -e ".[dev,notebooks,docs]"
 ```
 
 ## Development Workflow
 
-```bash
-# Format code
-black src/ tests/ examples/
+- **Formatting:**
+  - Run `black .` to auto-format code
+  - Run `isort .` to sort imports
+- **Linting:**
+  - Run `ruff .` for fast linting and code style checks
+- **Testing:**
+  - Run `pytest` for all tests
+  - Run `pytest --cov=src/linear_regression --cov-report=html` for coverage
+- **Continuous Integration:**
+  - All pushes and pull requests are checked by GitHub Actions (tests, lint, coverage)
 
-# Sort imports
-isort src/ tests/ examples/
-
-# Lint code
-flake8 src/ tests/ examples/
-
-# Run tests
-pytest
-
-# Run tests with coverage
-pytest --cov=src/linear_regression --cov-report=html
-
-# Run specific test file
-pytest tests/test_linear_regression.py
-
-# Run specific test
-pytest tests/test_linear_regression.py::TestLinearRegression::test_fit
+## Project Structure
 ```
-
-## Project Structure Overview
-
-```
-├── src/linear_regression/           # Main package
-│   ├── __init__.py                 # Package initialization
-│   ├── models/                     # Model implementations
+linear-regression-from-scratch/
+├── README.md                       ← You are here
+├── pyproject.toml                  ← Dependencies & package configuration (PEP 621)
+├── LICENSE                         ← MIT License
+├── src/linear_regression/          ← Main package
+│   ├── __init__.py                 ← Package initialization
+│   ├── models/                     ← ML model implementations  
 │   │   ├── __init__.py
-│   │   ├── linear_regression.py    # LinearRegression class
-│   │   └── polynomial_regression.py # PolynomialRegression class
-│   └── optimizers/                 # Optimization algorithms
-│       └── __init__.py
-├── tests/                          # Test suite
+│   │   ├── linear_regression.py    ← ✅ LinearRegression (complete)
+│   │   └── polynomial_regression.py ← 🚧 PolynomialRegression (planned)
+│   ├── preprocessing.py            ← ✅ StandardScaler (complete)
+│   ├── utils.py                    ← ✅ train_test_split (complete)
+│   └── metrics.py                  ← ✅ Metrics (R², MSE, MAE)
+├── tests/                          ← Test suite
 │   ├── __init__.py
-│   ├── test_linear_regression.py
-│   └── test_polynomial_regression.py
-├── examples/                       # Usage examples
-│   ├── basic_linear_regression.py
-│   ├── polynomial_regression_example.py
-│   └── data/
-│       └── sample_data.csv
-├── notebooks/                      # Jupyter notebooks
-├── docs/                          # Documentation
-│   ├── mathematical_background.md
-│   └── api_reference.md
-├── requirements.txt               # Dependencies
-├── setup.py                      # Package setup (legacy)
-├── pyproject.toml                # Modern package configuration
-├── README.md                     # Project documentation
-├── LICENSE                       # License file
-└── .gitignore                   # Git ignore rules
+│   ├── conftest.py                 ← ✅ Shared pytest fixtures for all tests
+│   ├── test_linear_regression.py   ← ✅ LinearRegression tests (uses shared fixtures)
+│   ├── test_metrics.py             ← ✅ Metrics tests (uses shared fixtures)
+│   └── test_polynomial_regression.py ← 🚧 Polynomial tests (planned)
+├── examples/                       ← Working examples & demos
+│   ├── basic_linear_regression.py  ← ✅ Complete examples
+│   ├── polynomial_regression_example.py ← 🚧 Planned
+│   └── data/                       ← Sample datasets
+├── notebooks/                      ← 🚧 Jupyter tutorials (planned)
+├── docs/                           ← Documentation
+│   ├── mathematical_background.md  ← Theory and equations
+│   └── api_reference.md            ← API documentation
+└── DEVELOPMENT.md                  ← Development workflow
 ```
+
+**Legend**: ✅ Complete | 🚧 Planned/In Progress
 
 ## Implementation Checklist
 
 ### Core Features
-- [ ] LinearRegression class
-  - [ ] Gradient descent optimization
-  - [ ] Normal equation solution
-  - [ ] Prediction functionality
-  - [ ] Model evaluation metrics
-- [ ] PolynomialRegression class
-  - [ ] Polynomial feature transformation
-  - [ ] Integration with LinearRegression
+- [x] `train_test_split` utility
+- [x] `StandartScaler` for feature scaling
+- [x] LinearRegression (gradient descent)
+- [ ] LinearRegression (normal equation)
+- [ ] PolynomialRegression (feature transformation, integration)
 - [ ] Comprehensive test suite
-- [ ] Documentation and examples
+- [ ] Visual examples in notebooks
+- [ ] Documentation and README
 
 ### Advanced Features (Optional)
 - [ ] Additional optimizers (SGD, Mini-batch GD)
 - [ ] Regularization (Ridge, Lasso)
-- [ ] Feature scaling utilities
 - [ ] Cross-validation
 - [ ] Plotting utilities
 - [ ] Real dataset examples
 
-## Next Steps
+## Collaboration & Contribution
 
-1. Implement the LinearRegression class in `src/linear_regression/models/linear_regression.py`
-2. Implement the PolynomialRegression class in `src/linear_regression/models/polynomial_regression.py`
-3. Write comprehensive tests
-4. Create working examples
-5. Add Jupyter notebook tutorials
-6. Expand documentation as needed
+- All contributors should follow code style enforced by Black, Ruff, and isort
+- All code must pass tests and linting before merging
+- Use feature branches and submit pull requests for review
+- Issues and TODOs are tracked in GitHub Issues and the project TODO list
+- For contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## Notebooks & Visual Examples
+- Add new Jupyter notebooks to the `notebooks/` folder
+- Use notebooks for tutorials, visualizations, and advanced examples
+- Visualize regression, cost function, and optimization steps where possible
+
+## Tips for New Contributors
+- Read the README.md and docs for project overview
+- Check the TODO list for open tasks
+- Ask questions via GitHub Issues or Discussions
+- Use clear commit messages and descriptive PR titles
+
+## Next Steps
+- Complete normal equation implementation
+- Implement PolynomialRegression
+- Expand test coverage
+- Add more visual examples in notebooks
+- Update documentation as features are added

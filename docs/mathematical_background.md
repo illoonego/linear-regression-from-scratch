@@ -1,36 +1,96 @@
 # Mathematical Background
 
-## Linear Regression Theory
+## Linear Regression
+### System of Linear Equations
 
-### Simple Linear Regression
+Linear regression is fundamentally a system of equations—one for each data point. For $m$ data points and $n$ features:
 
-Simple linear regression models the relationship between a single independent variable $x$ and a dependent variable $y$ using a linear function:
+```math
+\begin{align*}
+y^{(1)} &= \beta_0 + \beta_1 x_1^{(1)} + \beta_2 x_2^{(1)} + \ldots + \beta_n x_n^{(1)} + \epsilon^{(1)} \\
+y^{(2)} &= \beta_0 + \beta_1 x_1^{(2)} + \beta_2 x_2^{(2)} + \ldots + \beta_n x_n^{(2)} + \epsilon^{(2)} \\
+&\vdots \\
+y^{(m)} &= \beta_0 + \beta_1 x_1^{(m)} + \beta_2 x_2^{(m)} + \ldots + \beta_n x_n^{(m)} + \epsilon^{(m)}
+\end{align*}
+```
 
-$$y = \beta_0 + \beta_1 x + \epsilon$$
+### Matric Form
+To handle many samples efficiently, we rewrite linear regression using matrices:
 
+#### Feature Matrix
+For $m$ samples and $n$ features, the feature matrix $\mathbf{X}$ is:
+```math
+\mathbf{X} =
+\begin{bmatrix}
+x_{11} & x_{12} & \dots & x_{1n} \\
+x_{21} & x_{22} & \dots & x_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{m1} & x_{m2} & \dots & x_{mn}
+\end{bmatrix}
+```
+Each row represents a sample, each column a feature.
+
+#### Adding Intercept Column
+To include the intercept term $\beta_0$, we prepend a column of ones to $\mathbf{X}$, forming $\mathbf{X'}$:
+```math
+\mathbf{X}' =
+\begin{bmatrix}
+1 & x_{11} & x_{12} & \dots & x_{1n} \\
+1 & x_{21} & x_{22} & \dots & x_{2n} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & x_{m1} & x_{m2} & \dots & x_{mn}
+\end{bmatrix}
+```
+This allows the model to learn an intercept.
+
+#### Coefficient Vector
+The coefficients (including intercept) are stored in a vector $\boldsymbol{\beta}$:
+```math
+\boldsymbol{\beta} = \begin{bmatrix}
+  \beta_0 \\
+  \beta_1 \\
+  \beta_2 \\
+  \vdots \\
+  \beta_n
+\end{bmatrix}
+```
+
+#### Target Vector
+The target values are stored in a vector $\mathbf{y}$:
+```math
+\mathbf{y} = \begin{bmatrix}
+  y_1 \\
+  y_2 \\
+  \vdots \\
+  y_m
+\end{bmatrix}
+```
+
+#### Matrix Form of the Model
+The matrix form of linear regression is:
+```math
+\mathbf{y} = \mathbf{X'} \boldsymbol{\beta} + \boldsymbol{\epsilon}
+```
 Where:
-- $\beta_0$ is the y-intercept (bias term)
-- $\beta_1$ is the slope (weight)
-- $\epsilon$ is the error term
+- $\mathbf{y}$ is the vector of all target values
+- $\mathbf{X'}$ is the feature matrix with intercept column
+- $\boldsymbol{\beta}$ is the vector of all coefficients
+- $\boldsymbol{\epsilon}$ is the vector of errors
 
-### Multiple Linear Regression
+**Visualization:**
+- Scatter plot with each point representing an equation.
+- Animation: Show how all points contribute to the system.
 
-Multiple linear regression extends this to multiple independent variables:
+## Why Matrix Form?
 
-$$y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n + \epsilon$$
+Matrix notation enables:
+- Vectorized, efficient computation
+- Clear expression of optimization methods
+- Scalability to large datasets
 
-In matrix form:
-$$\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$$
+## Cost Function
 
-Where:
-- $\mathbf{y}$ is the target vector of shape $(m, 1)$
-- $\mathbf{X}$ is the feature matrix of shape $(m, n+1)$ (including intercept column)
-- $\boldsymbol{\beta}$ is the parameter vector of shape $(n+1, 1)$
-- $\boldsymbol{\epsilon}$ is the error vector
-
-### Cost Function
-
-The most commonly used cost function is Mean Squared Error (MSE):
+The most common cost function is Mean Squared Error (MSE):
 
 $$J(\boldsymbol{\beta}) = \frac{1}{2m} \sum_{i=1}^{m} (h_{\boldsymbol{\beta}}(\mathbf{x}^{(i)}) - y^{(i)})^2$$
 
@@ -39,59 +99,96 @@ $$J(\boldsymbol{\beta}) = \frac{1}{2m} (\mathbf{X}\boldsymbol{\beta} - \mathbf{y
 
 ## Optimization Methods
 
-### 1. Normal Equation (Closed-Form Solution)
+### Normal Equation (Closed-Form Solution)
 
-The optimal parameters can be found analytically by setting the gradient to zero:
+Analytically solve for parameters:
+$$
+\boldsymbol{\beta} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}
+$$
 
-$$\boldsymbol{\beta} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y}$$
+**Pros:** Exact, no learning rate, no iterations
+**Cons:** Slow for large $n$, requires matrix inversion, unstable if $\mathbf{X}^T\mathbf{X}$ is singular
 
-**Advantages:**
-- Exact solution
-- No need to choose learning rate
-- No iterations required
+### Gradient Descent
 
-**Disadvantages:**
-- Computationally expensive for large datasets ($O(n^3)$)
-- Requires matrix inversion
-- May be numerically unstable if $\mathbf{X}^T \mathbf{X}$ is singular
-
-### 2. Gradient Descent
-
-Iteratively updates parameters in the direction of steepest descent:
-
-$$\boldsymbol{\beta} := \boldsymbol{\beta} - \alpha \nabla J(\boldsymbol{\beta})$$
-
-The gradient is:
-$$\nabla J(\boldsymbol{\beta}) = \frac{1}{m} \mathbf{X}^T (\mathbf{X}\boldsymbol{\beta} - \mathbf{y})$$
+Iteratively update parameters:
+$$
+\boldsymbol{\beta} := \boldsymbol{\beta} - \alpha \nabla J(\boldsymbol{\beta})
+$$
+where
+$$
+\nabla J(\boldsymbol{\beta}) = \frac{1}{m} \mathbf{X}^T (\mathbf{X}\boldsymbol{\beta} - \mathbf{y})
+$$
 
 **Algorithm:**
-1. Initialize $\boldsymbol{\beta}$ randomly
-2. Repeat until convergence:
-   - Calculate predictions: $\hat{\mathbf{y}} = \mathbf{X}\boldsymbol{\beta}$
-   - Calculate error: $\mathbf{e} = \hat{\mathbf{y}} - \mathbf{y}$
-   - Calculate gradient: $\nabla J = \frac{1}{m} \mathbf{X}^T \mathbf{e}$
-   - Update parameters: $\boldsymbol{\beta} := \boldsymbol{\beta} - \alpha \nabla J$
+1. Initialize $\boldsymbol{\beta}$
+2. Repeat:
+   - Predict: $\hat{\mathbf{y}} = \mathbf{X}\boldsymbol{\beta}$
+   - Error: $\mathbf{e} = \hat{\mathbf{y}} - \mathbf{y}$
+   - Gradient: $\nabla J = \frac{1}{m} \mathbf{X}^T \mathbf{e}$
+   - Update: $\boldsymbol{\beta} := \boldsymbol{\beta} - \alpha \nabla J$
 
-**Advantages:**
-- Works well with large datasets
-- Simple to implement
-- Memory efficient
+**Visualization:**
+- Contour plot of $J(\boldsymbol{\beta})$ with arrows for gradient steps
+- Animation: Show parameter updates moving toward minimum
 
-**Disadvantages:**
-- Requires choosing learning rate
-- May converge slowly
-- Can get stuck in local minima (though not an issue for linear regression)
+### Stochastic Gradient Descent (SGD)
 
-### 3. Stochastic Gradient Descent (SGD)
-
-Updates parameters using one training example at a time:
-
-$$\boldsymbol{\beta} := \boldsymbol{\beta} - \alpha \nabla J^{(i)}(\boldsymbol{\beta})$$
-
-Where $\nabla J^{(i)}(\boldsymbol{\beta}) = (\hat{y}^{(i)} - y^{(i)}) \mathbf{x}^{(i)}$
+Update using one sample at a time:
+$$
+\boldsymbol{\beta} := \boldsymbol{\beta} - \alpha \nabla J^{(i)}(\boldsymbol{\beta})
+$$
+where $\nabla J^{(i)}(\boldsymbol{\beta}) = (\hat{y}^{(i)} - y^{(i)}) \mathbf{x}^{(i)}$
 
 ## Polynomial Regression
 
+Transform features to fit non-linear relationships:
+$$
+y = \beta_0 + \beta_1 x + \beta_2 x^2 + \ldots + \beta_d x^d + \epsilon
+$$
+
+For multiple features, create polynomial and interaction terms.
+
+## Model Evaluation
+
+### $R^2$ (Coefficient of Determination)
+$$
+R^2 = 1 - \frac{SS_{res}}{SS_{tot}} = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
+$$
+
+### Mean Squared Error (MSE)
+$$
+MSE = \frac{1}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i)^2
+$$
+
+### Mean Absolute Error (MAE)
+$$
+MAE = \frac{1}{m} \sum_{i=1}^{m} |y_i - \hat{y}_i|
+$$
+
+## Implementation Considerations
+
+### Feature Scaling
+
+For gradient descent, scale features for faster convergence:
+- **Standardization**: $x' = \frac{x - \mu}{\sigma}$
+- **Normalization**: $x' = \frac{x - x_{min}}{x_{max} - x_{min}}$
+
+### Regularization
+
+Reduce overfitting, especially for polynomials:
+
+**Ridge (L2):**
+$$J(\boldsymbol{\beta}) = \frac{1}{2m} \|\mathbf{X}\boldsymbol{\beta} - \mathbf{y}\|^2 + \lambda \|\boldsymbol{\beta}\|^2$$
+
+**Lasso (L1):**
+$$J(\boldsymbol{\beta}) = \frac{1}{2m} \|\mathbf{X}\boldsymbol{\beta} - \mathbf{y}\|^2 + \lambda \|\boldsymbol{\beta}\|_1$$
+
+### Bias-Variance Tradeoff
+
+- **High Bias, Low Variance**: Underfitting
+- **Low Bias, High Variance**: Overfitting
+- **Goal**: Balance for generalization
 Polynomial regression extends linear regression by transforming features:
 
 $$y = \beta_0 + \beta_1 x + \beta_2 x^2 + \ldots + \beta_d x^d + \epsilon$$
