@@ -1,230 +1,197 @@
 # API Reference
 
-## linear_regression.models
+## linear_regression.models.linear_regression
 
 ### LinearRegression
-
 ```python
 class LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
 ```
-
-Linear regression implementation using gradient descent and normal equation methods.
-
-#### Parameters
-
-- **learning_rate** (*float*, default=0.01): Learning rate for gradient descent optimization
-- **n_iterations** (*int*, default=1000): Number of iterations for gradient descent
-- **fit_intercept** (*bool*, default=True): Whether to calculate the intercept for this model
-
-#### Attributes
-
-- **weights** (*np.ndarray*): Model parameters (coefficients and intercept)
-- **cost_history** (*list*): History of cost function values during training
-
-#### Methods
-
-##### fit(X, y, method='gradient_descent')
-
-Fit the linear regression model to training data.
+Implements linear regression using gradient descent.
 
 **Parameters:**
-- **X** (*np.ndarray*): Training features of shape (n_samples, n_features)
-- **y** (*np.ndarray*): Training targets of shape (n_samples,)
-- **method** (*str*, default='gradient_descent'): Optimization method ('gradient_descent' or 'normal_equation')
+- `learning_rate` (float, default=0.01): Step size for gradient descent.
+- `n_iterations` (int, default=1000): Number of iterations for gradient descent.
+- `fit_intercept` (bool, default=True): Whether to include an intercept term.
 
-**Returns:**
-- **self**: Returns self for method chaining
+**Note:** Normal equation method is not yet implemented.
 
-##### predict(X)
+**Attributes:**
+- `weights_`: Model coefficients (and intercept if enabled)
+- `cost_history_`: List of cost values per iteration (gradient descent)
+- `is_fitted_`: True if model has been fitted
+- `n_features_`: Number of features in training data
 
-Make predictions using the trained model.
+**Methods:**
 
-**Parameters:**
-- **X** (*np.ndarray*): Features to predict on of shape (n_samples, n_features)
+- `fit(X, y, method="gradient_descent"|"normal_equation")`
+	- **Parameters:**
+		- `X` (np.ndarray, shape (n_samples, n_features)): Training data
+		- `y` (np.ndarray, shape (n_samples,)): Target values
+		- `method` (str): Optimization method
+	- **Returns:** None
+	- **Raises:**
+		- ValueError: If input shapes are invalid or method is unsupported
+		- NotImplementedError: If method is "normal_equation"
 
-**Returns:**
-- **np.ndarray**: Predictions of shape (n_samples,)
+- `predict(X)`
+	- **Parameters:**
+		- `X` (np.ndarray, shape (n_samples, n_features)): Data to predict
+	- **Returns:** np.ndarray, shape (n_samples,)
+	- **Raises:**
+		- ValueError: If model is not fitted or input shape is invalid
 
-##### score(X, y)
+- `_add_intercept(X)`
+	- **Parameters:**
+		- `X` (np.ndarray): Feature matrix
+	- **Returns:** np.ndarray
 
-Calculate R² score (coefficient of determination).
-
-**Parameters:**
-- **X** (*np.ndarray*): Features of shape (n_samples, n_features)
-- **y** (*np.ndarray*): True targets of shape (n_samples,)
-
-**Returns:**
-- **float**: R² score
-
-##### mean_squared_error(y_true, y_pred)
-
-Calculate mean squared error.
-
-**Parameters:**
-- **y_true** (*np.ndarray*): True values
-- **y_pred** (*np.ndarray*): Predicted values
-
-**Returns:**
-- **float**: Mean squared error
-
-##### mean_absolute_error(y_true, y_pred)
-
-Calculate mean absolute error.
-
-**Parameters:**
-- **y_true** (*np.ndarray*): True values
-- **y_pred** (*np.ndarray*): Predicted values
-
-**Returns:**
-- **float**: Mean absolute error
-
-#### Example
-
+**Limitations:**
+- Only gradient descent is implemented; normal equation is a placeholder.
+- Does not support categorical features.
+- No built-in regularization.
+**Example:**
 ```python
 from linear_regression.models.linear_regression import LinearRegression
 import numpy as np
-
-# Create sample data
 X = np.array([[1], [2], [3], [4], [5]])
 y = np.array([2, 4, 6, 8, 10])
-
-# Create and train model
-model = LinearRegression(learning_rate=0.01, n_iterations=1000)
-model.fit(X, y, method='gradient_descent')
-
-# Make predictions
+model = LinearRegression()
+model.fit(X, y, method="gradient_descent")
 predictions = model.predict(X)
-
-# Evaluate model
-r2_score = model.score(X, y)
-mse = model.mean_squared_error(y, predictions)
 ```
+
+---
+
+## linear_regression.models.polynomial_regression
 
 ### PolynomialRegression
+**Not implemented.** All methods are stubs and raise NotImplementedError.
 
+**Limitations:**
+- All methods raise NotImplementedError.
+
+---
+
+## linear_regression.preprocessing
+
+### StandartScaler
 ```python
-class PolynomialRegression(degree=2, learning_rate=0.01, n_iterations=1000, fit_intercept=True)
+class StandartScaler()
 ```
+Standardizes features by removing the mean and scaling to unit variance.
 
-Polynomial regression implementation that transforms features into polynomial features.
+**Parameters:** None
 
-#### Parameters
+**Attributes:**
+- `mean_`: Feature means
+- `std_`: Feature standard deviations
+- `is_fitted_`: True if scaler has been fitted
+- `n_features_`: Number of features
 
-- **degree** (*int*, default=2): Degree of polynomial features
-- **learning_rate** (*float*, default=0.01): Learning rate for gradient descent
-- **n_iterations** (*int*, default=1000): Number of iterations for gradient descent
-- **fit_intercept** (*bool*, default=True): Whether to calculate the intercept
+**Methods:**
 
-#### Attributes
+- `fit(X)`
+	- **Parameters:**
+		- `X` (np.ndarray, shape (n_samples, n_features)): Data to fit scaler
+	- **Returns:** None
+	- **Raises:**
+		- ValueError: If input is not 2D or contains non-numeric data
 
-- **degree** (*int*): Degree of polynomial features
-- **linear_model** (*LinearRegression*): Underlying linear regression model
+- `transform(X)`
+	- **Parameters:**
+		- `X` (np.ndarray, shape (n_samples, n_features)): Data to transform
+	- **Returns:** np.ndarray, shape (n_samples, n_features)
+	- **Raises:**
+		- ValueError: If scaler is not fitted or input shape is invalid
 
-#### Methods
-
-##### fit(X, y, method='gradient_descent')
-
-Fit the polynomial regression model to training data.
-
-**Parameters:**
-- **X** (*np.ndarray*): Training features of shape (n_samples, n_features)
-- **y** (*np.ndarray*): Training targets of shape (n_samples,)
-- **method** (*str*, default='gradient_descent'): Optimization method
-
-**Returns:**
-- **self**: Returns self for method chaining
-
-##### predict(X)
-
-Make predictions using the trained model.
-
-**Parameters:**
-- **X** (*np.ndarray*): Features to predict on of shape (n_samples, n_features)
-
-**Returns:**
-- **np.ndarray**: Predictions of shape (n_samples,)
-
-##### score(X, y)
-
-Calculate R² score (coefficient of determination).
-
-**Parameters:**
-- **X** (*np.ndarray*): Features of shape (n_samples, n_features)
-- **y** (*np.ndarray*): True targets of shape (n_samples,)
-
-**Returns:**
-- **float**: R² score
-
-#### Example
-
+**Limitations:**
+- Only supports numeric features.
+**Example:**
 ```python
-from linear_regression.models.polynomial_regression import PolynomialRegression
+from linear_regression.preprocessing import StandartScaler
 import numpy as np
-
-# Create sample data (quadratic relationship)
-X = np.array([[1], [2], [3], [4], [5]])
-y = np.array([1, 4, 9, 16, 25])  # y = x²
-
-# Create and train model
-model = PolynomialRegression(degree=2)
-model.fit(X, y)
-
-# Make predictions
-predictions = model.predict(X)
-
-# Evaluate model
-r2_score = model.score(X, y)
+X = np.array([[1, 2], [3, 4], [5, 6]])
+scaler = StandartScaler()
+scaler.fit(X)
+X_scaled = scaler.transform(X)
 ```
 
-## Usage Patterns
+---
 
-### Simple Linear Regression
+## linear_regression.utils
 
+### train_test_split
 ```python
-# For simple linear regression (one feature)
-from linear_regression.models import LinearRegression
-
-model = LinearRegression()
-model.fit(X, y)
-predictions = model.predict(X_test)
+train_test_split(X, y, test_size=0.2, random_state=None)
 ```
+Splits arrays or matrices into random train and test subsets.
 
-### Multiple Linear Regression
+**Parameters:**
+- `X` (np.ndarray, shape (n_samples, n_features)): Features
+- `y` (np.ndarray, shape (n_samples,)): Targets
+- `test_size` (float, default=0.2): Fraction of data for test set
+- `random_state` (int, optional): Seed for reproducibility
 
+**Returns:**
+- `X_train` (np.ndarray)
+- `X_test` (np.ndarray)
+- `y_train` (np.ndarray)
+- `y_test` (np.ndarray)
+
+**Raises:**
+- ValueError: If input shapes are invalid or test_size is out of bounds
+
+**Returns:** `X_train, X_test, y_train, y_test`
+
+**Example:**
 ```python
-# For multiple features
-X_multi = np.array([[1, 2], [2, 3], [3, 4], [4, 5]])
-y = np.array([5, 8, 11, 14])
-
-model = LinearRegression()
-model.fit(X_multi, y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 ```
+## linear_regression.metrics
 
-### Polynomial Features
-
+### r2_score
 ```python
-# For non-linear relationships
-from linear_regression.models import PolynomialRegression
-
-# Quadratic fit
-model = PolynomialRegression(degree=2)
-model.fit(X, y)
-
-# Cubic fit
-model_cubic = PolynomialRegression(degree=3)
-model_cubic.fit(X, y)
+r2_score(y_true, y_pred)
 ```
+Returns the coefficient of determination $R^2$.
 
-### Method Comparison
+**Parameters:**
+- `y_true` (np.ndarray, shape (n_samples,)): True values
+- `y_pred` (np.ndarray, shape (n_samples,)): Predicted values
 
+**Returns:** float
+
+**Raises:**
+- ValueError: If input shapes are invalid
+
+### mean_squared_error
 ```python
-# Compare gradient descent vs normal equation
-model_gd = LinearRegression()
-model_gd.fit(X, y, method='gradient_descent')
-
-model_ne = LinearRegression()
-model_ne.fit(X, y, method='normal_equation')
+mean_squared_error(y_true, y_pred)
 ```
+
+**Parameters:**
+- `y_true` (np.ndarray, shape (n_samples,)): True values
+- `y_pred` (np.ndarray, shape (n_samples,)): Predicted values
+
+**Returns:** float
+
+**Raises:**
+- ValueError: If input shapes are invalid
+
+### mean_absolute_error
+```python
+mean_absolute_error(y_true, y_pred)
+```
+Returns the mean absolute error.
+
+**Parameters:**
+- `y_true` (np.ndarray, shape (n_samples,)): True values
+- `y_pred` (np.ndarray, shape (n_samples,)): Predicted values
+
+**Returns:** float
+
+**Raises:**
+- ValueError: If input shapes are invalid
 
 ## Error Handling
 
@@ -240,3 +207,6 @@ The classes will raise appropriate exceptions for:
 - **Gradient Descent**: Better for large datasets
 - **Feature Scaling**: Recommended for gradient descent
 - **Polynomial Degree**: Higher degrees increase overfitting risk
+
+## Notes
+- All dependencies are managed via `pyproject.toml` (PEP 621)
