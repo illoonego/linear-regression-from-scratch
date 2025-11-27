@@ -1,34 +1,81 @@
 # Mathematical Background
-# Linear Regression as a System of Equations
 
-In practice, linear regression is not just a single equation, but a system of equations—one for each data point. For $m$ data points, we have:
-
-# Mathematical Background
-
-## Linear Regression: System of Equations and Matrix Form
+## Linear Regression
+### System of Linear Equations
 
 Linear regression is fundamentally a system of equations—one for each data point. For $m$ data points and $n$ features:
 
-$$
+```math
 \begin{align*}
 y^{(1)} &= \beta_0 + \beta_1 x_1^{(1)} + \beta_2 x_2^{(1)} + \ldots + \beta_n x_n^{(1)} + \epsilon^{(1)} \\
 y^{(2)} &= \beta_0 + \beta_1 x_1^{(2)} + \beta_2 x_2^{(2)} + \ldots + \beta_n x_n^{(2)} + \epsilon^{(2)} \\
 &\vdots \\
 y^{(m)} &= \beta_0 + \beta_1 x_1^{(m)} + \beta_2 x_2^{(m)} + \ldots + \beta_n x_n^{(m)} + \epsilon^{(m)}
 \end{align*}
-$$
+```
 
-This system is compactly represented in matrix form:
+### Matric Form
+To handle many samples efficiently, we rewrite linear regression using matrices:
 
-$$
-\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}
-$$
+#### Feature Matrix
+For $m$ samples and $n$ features, the feature matrix $\mathbf{X}$ is:
+```math
+\mathbf{X} =
+\begin{bmatrix}
+x_{11} & x_{12} & \dots & x_{1n} \\
+x_{21} & x_{22} & \dots & x_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{m1} & x_{m2} & \dots & x_{mn}
+\end{bmatrix}
+```
+Each row represents a sample, each column a feature.
 
+#### Adding Intercept Column
+To include the intercept term $\beta_0$, we prepend a column of ones to $\mathbf{X}$, forming $\mathbf{X'}$:
+```math
+\mathbf{X}' =
+\begin{bmatrix}
+1 & x_{11} & x_{12} & \dots & x_{1n} \\
+1 & x_{21} & x_{22} & \dots & x_{2n} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & x_{m1} & x_{m2} & \dots & x_{mn}
+\end{bmatrix}
+```
+This allows the model to learn an intercept.
+
+#### Coefficient Vector
+The coefficients (including intercept) are stored in a vector $\boldsymbol{\beta}$:
+```math
+\boldsymbol{\beta} = \begin{bmatrix}
+  \beta_0 \\
+  \beta_1 \\
+  \beta_2 \\
+  \vdots \\
+  \beta_n
+\end{bmatrix}
+```
+
+#### Target Vector
+The target values are stored in a vector $\mathbf{y}$:
+```math
+\mathbf{y} = \begin{bmatrix}
+  y_1 \\
+  y_2 \\
+  \vdots \\
+  y_m
+\end{bmatrix}
+```
+
+#### Matrix Form of the Model
+The matrix form of linear regression is:
+```math
+\mathbf{y} = \mathbf{X'} \boldsymbol{\beta} + \boldsymbol{\epsilon}
+```
 Where:
-- $\mathbf{y}$: Target vector $(m, 1)$
-- $\mathbf{X}$: Feature matrix $(m, n+1)$ (first column is ones for intercept)
-- $\boldsymbol{\beta}$: Parameter vector $(n+1, 1)$
-- $\boldsymbol{\epsilon}$: Error vector $(m, 1)$
+- $\mathbf{y}$ is the vector of all target values
+- $\mathbf{X'}$ is the feature matrix with intercept column
+- $\boldsymbol{\beta}$ is the vector of all coefficients
+- $\boldsymbol{\epsilon}$ is the vector of errors
 
 **Visualization:**
 - Scatter plot with each point representing an equation.
