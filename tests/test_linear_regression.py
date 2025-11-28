@@ -48,8 +48,11 @@ class TestLinearRegression:
 
     def test_fit_normal_equation(self, model, synthetic_data):
         """Test fitting with normal equation."""
-        # TODO: Test normal equation fitting
-        pass
+        X, y = synthetic_data
+        model.fit(X, y, method="normal_equation")
+        assert model.is_fitted_ is True
+        assert model.weights_ is not None
+        assert len(model.cost_history_) == 0  # No cost history for normal equation
 
     def test_predict(self, model, synthetic_data):
         """Test prediction functionality."""
