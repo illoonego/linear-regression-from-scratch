@@ -42,38 +42,46 @@ def example_1d_simple():
     X_test_scaled = scaler.transform(X_test)
     print("Data transformation completed!")
 
-    # Create and train model
-    model = LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
-    method = "gradient_descent"
+    # Train with Gradient Descent
+    model_gd = LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
+    method_gd = "gradient_descent"
+    print(f"\nTraining model with {method_gd.replace('_', ' ').title()}...")
+    model_gd.fit(X_train_scaled, y_train, method=method_gd)
+    print("Training completed!")
 
-    print(f"\nTraining model with {method.replace('_', ' ').title()}...\n")
-    model.fit(X_train_scaled, y_train, method=method)
-    print("\nTraining completed!")
+    # Train with Normal Equation
+    model_ne = LinearRegression(fit_intercept=True)
+    method_ne = "normal_equation"
+    print(f"\nTraining model with {method_ne.replace('_', ' ').title()} (closed-form)...")
+    model_ne.fit(X_train_scaled, y_train, method=method_ne)
+    print("Training completed!")
 
     # Make predictions
-    y_pred_train = model.predict(X_train_scaled)
-    y_pred_test = model.predict(X_test_scaled)
+    y_pred_gd = model_gd.predict(X_test_scaled)
+    y_pred_ne = model_ne.predict(X_test_scaled)
 
     # Evaluate performance
-    r2_train = r2_score(y_train, y_pred_train)
-    mse_train = mean_squared_error(y_train, y_pred_train)
-
-    r2_test = r2_score(y_test, y_pred_test)
-    mse_test = mean_squared_error(y_test, y_pred_test)
+    r2_gd = r2_score(y_test, y_pred_gd)
+    mse_gd = mean_squared_error(y_test, y_pred_gd)
+    r2_ne = r2_score(y_test, y_pred_ne)
+    mse_ne = mean_squared_error(y_test, y_pred_ne)
 
     # Unsclae weights to original scale
-    weight_unscaled = model.weights_[1] / scaler.std_[0]
-    intercept_unscaled = model.weights_[0] - (weight_unscaled * scaler.mean_[0])
+    weight_gd_unscaled = model_gd.weights_[1] / scaler.std_[0]
+    intercept_gd_unscaled = model_gd.weights_[0] - (weight_gd_unscaled * scaler.mean_[0])
+    weight_ne_unscaled = model_ne.weights_[1] / scaler.std_[0]
+    intercept_ne_unscaled = model_ne.weights_[0] - (weight_ne_unscaled * scaler.mean_[0])
 
-    print("\nResults:")
-    print(f"Training Set - R² Score: {r2_train:.4f}, MSE: {mse_train:.4f}")
-    print(f"Testing Set  - R² Score: {r2_test:.4f}, MSE: {mse_test:.4f}")
+    print("\nResults (Gradient Descent):")
+    print(f"Testing Set - R² Score: {r2_gd:.4f}, MSE: {mse_gd:.4f}")
+    print(f"Learned weights (original scale): slope={weight_gd_unscaled:.2f}, intercept={intercept_gd_unscaled:.2f}")
 
-    print("\nComparison of the weights:")
-    print(f"True weights: slope={slope}, intercept={intercept}")
-    print(f"Learned weights (original scale): slope={weight_unscaled:.2f}, intercept={intercept_unscaled:.2f}")
-    print(f"Learning weights (scaled): slope={model.weights_[1]:.2f}, intercept={model.weights_[0]:.2f}")
-    print(f"Error (original scale):   slope={abs(slope - weight_unscaled):.2f}, intercept={abs(intercept - intercept_unscaled):.2f}")
+    print("\nResults (Normal Equation):")
+    print(f"Testing Set - R² Score: {r2_ne:.4f}, MSE: {mse_ne:.4f}")
+    print(f"Learned weights (original scale): slope={weight_ne_unscaled:.2f}, intercept={intercept_ne_unscaled:.2f}")
+
+    print("\nTrue weights:")
+    print(f"slope={slope}, intercept={intercept}")
 
 
 def example_2d_multiple():
@@ -106,47 +114,55 @@ def example_2d_multiple():
     print("Transforming training and testing data...")
     X_train_scaled = scaler.transform(X_train)
     X_test_scaled = scaler.transform(X_test)
+    print("Data transformation completed!")
 
-    # Create and train model
-    model = LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
-    method = "gradient_descent"
+    # Train with Gradient Descent
+    model_gd = LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
+    method_gd = "gradient_descent"
+    print(f"\nTraining model with {method_gd.replace('_', ' ').title()}...")
+    model_gd.fit(X_train_scaled, y_train, method=method_gd)
+    print("Training completed!")
 
-    print(f"\nTraining model with {method.replace('_', ' ').title()}...\n")
-    model.fit(X_train_scaled, y_train, method=method)
-    print("\nTraining completed!")
+    # Train with Normal Equation
+    model_ne = LinearRegression(fit_intercept=True)
+    method_ne = "normal_equation"
+    print(f"\nTraining model with {method_ne.replace('_', ' ').title()} (closed-form)...")
+    model_ne.fit(X_train_scaled, y_train, method=method_ne)
+    print("Training completed!")
 
     # Make predictions
-    y_pred_train = model.predict(X_train_scaled)
-    y_pred_test = model.predict(X_test_scaled)
+    y_pred_gd = model_gd.predict(X_test_scaled)
+    y_pred_ne = model_ne.predict(X_test_scaled)
 
     # Evaluate performance
-    r2_train = r2_score(y_train, y_pred_train)
-    r2_test = r2_score(y_test, y_pred_test)
-    mse_train = mean_squared_error(y_train, y_pred_train)
-    mse_test = mean_squared_error(y_test, y_pred_test)
+    r2_gd = r2_score(y_test, y_pred_gd)
+    mse_gd = mean_squared_error(y_test, y_pred_gd)
+    r2_ne = r2_score(y_test, y_pred_ne)
+    mse_ne = mean_squared_error(y_test, y_pred_ne)
 
-    # Unsclae weights to original scale
-    weight_unscaled = model.weights_[1] / scaler.std_[0]
-    bedroom_unscaled = model.weights_[2] / scaler.std_[1]
-    intercept_unscaled = model.weights_[0] - (weight_unscaled * scaler.mean_[0]) - (bedroom_unscaled * scaler.mean_[1])
+    # Unscale weights to original scale
+    weight_gd_unscaled = model_gd.weights_[1] / scaler.std_[0]
+    bedroom_gd_unscaled = model_gd.weights_[2] / scaler.std_[1]
+    intercept_gd_unscaled = model_gd.weights_[0] - (weight_gd_unscaled * scaler.mean_[0]) - (bedroom_gd_unscaled * scaler.mean_[1])
 
-    print("\nResults:")
-    print(f"Training Set - R² Score: {r2_train:.4f}, MSE: {mse_train:.4f}")
-    print(f"Testing Set  - R² Score: {r2_test:.4f}, MSE: {mse_test:.4f}")
+    weight_ne_unscaled = model_ne.weights_[1] / scaler.std_[0]
+    bedroom_ne_unscaled = model_ne.weights_[2] / scaler.std_[1]
+    intercept_ne_unscaled = model_ne.weights_[0] - (weight_ne_unscaled * scaler.mean_[0]) - (bedroom_ne_unscaled * scaler.mean_[1])
 
-    print("\nComparison of the weights:")
-    print("True weights:    size=150.00, bedroom=10000.00, intercept=20000.00")
-    print(f"Learned weights (scaled): size={model.weights_[1]:.2f}, bedroom={model.weights_[2]:.2f}, intercept={model.weights_[0]:.2f}")
+    print("\nResults (Gradient Descent):")
+    print(f"Testing Set - R² Score: {r2_gd:.4f}, MSE: {mse_gd:.4f}")
     print(
-        f"Learned weights (original scale): size={weight_unscaled:.2f}, "
-        f"bedroom={bedroom_unscaled:.2f}, "
-        f"intercept={intercept_unscaled:.2f}\n"
+        f"Learned weights (original scale): size={weight_gd_unscaled:.2f}, bedroom={bedroom_gd_unscaled:.2f}, intercept={intercept_gd_unscaled:.2f}"
     )
+
+    print("\nResults (Normal Equation):")
+    print(f"Testing Set - R² Score: {r2_ne:.4f}, MSE: {mse_ne:.4f}")
     print(
-        f"Error (original scale):   size={abs(150 - weight_unscaled):.2f}, "
-        f"bedroom={abs(10000 - bedroom_unscaled):.2f}, "
-        f"intercept={abs(20000 - intercept_unscaled):.2f}"
+        f"Learned weights (original scale): size={weight_ne_unscaled:.2f}, bedroom={bedroom_ne_unscaled:.2f}, intercept={intercept_ne_unscaled:.2f}"
     )
+
+    print("\nTrue weights:")
+    print("size=150.00, bedroom=10000.00, intercept=20000.00")
 
 
 def main():
