@@ -39,13 +39,14 @@ class LinearRegression:
         >>> predictions = model.predict(X)
     """
 
-    def __init__(self, learning_rate=0.01, n_iterations=1000, fit_intercept=True):
+    def __init__(self, learning_rate=0.01, n_iterations=1000, fit_intercept=True, verbose=True):
         """Initialize LinearRegression model.
 
         Args:
             learning_rate (float): Learning rate for gradient descent
             n_iterations (int): Number of iterations for gradient descent
             fit_intercept (bool): Whether to fit intercept term
+            verbose (bool): Whether to print progress (cost function values) during training (default: True)
         """
         # ===== INPUT VALIDATION =====
         # Basic validation
@@ -57,6 +58,8 @@ class LinearRegression:
             raise TypeError("n_iterations must be an integer value")
         if not isinstance(fit_intercept, bool):
             raise TypeError("fit_intercept must be a boolean value")
+        if not isinstance(verbose, bool):
+            raise TypeError("verbose must be a boolean value")
 
         # Warning validation
         if learning_rate > 1.0:
@@ -69,12 +72,14 @@ class LinearRegression:
         self.learning_rate = learning_rate
         self.n_iterations = n_iterations
         self.fit_intercept = fit_intercept
+        self.verbose = verbose
 
         #  Initialize attributes that will be set during training
         self.weights_ = None
         self.cost_history_ = []
         self.is_fitted_ = False
         self.n_features_ = None
+        self.fit_method_ = None  # Store which method was used to fit
 
     def fit(self, X, y, method="gradient_descent"):
         """Fit the linear regression model to training data.
@@ -130,21 +135,22 @@ class LinearRegression:
         # ===== FITTING LOGIC =====
         # Store number of features
         self.n_features_ = n_features
+        self.fit_method_ = method  # Remember which method was used
 
         # Add intercept if needed
         if self.fit_intercept:
             X = self._add_intercept(X)
-
-        # Initialize initial weights
-        self.weights_ = np.random.uniform(-0.1, 0.1, X.shape[1])  # fill weights with small random values the shape of X columns
 
         # Reset cost history for new training
         self.cost_history_ = []
 
         # Choose fitting method
         if method == "gradient_descent":
+            # Initialize initial weights only for GD
+            self.weights_ = np.random.uniform(-0.1, 0.1, X.shape[1])
             self._gradient_descent(X, y)
         elif method == "normal_equation":
+            # Do not initialize weights for normal equation
             self._normal_equation(X, y)
 
         # Mark model as fitted and return self
@@ -168,12 +174,21 @@ class LinearRegression:
 
         # Convert X to numpy array
         X = np.array(X)
-        if not np.isfinite(X).all():
+
+        # Check dimensions
+        if X.ndim != 2:
+            raise ValueError(f"X must be a 2D array, got {X.ndim}D array instead")
+
+        # Check for non-numeric data
+        try:
+            if not np.isfinite(X).all():
+                raise ValueError("X contains non-numeric or infinite values")
+        except TypeError:
             raise ValueError("X contains non-numeric or infinite values")
 
         # Check that X is the same number of features as training data
         if X.shape[1] != self.n_features_:
-            raise ValueError(f"Expected {self.n_features_} features, got {X.shape[1]}")
+            raise ValueError(f"Input features have {X.shape[1]} columns, but model was trained with {self.n_features_} features.")
 
         # Add intercept if needed
         if self.fit_intercept:
@@ -216,8 +231,8 @@ class LinearRegression:
             cost = (1 / (2 * X.shape[0])) * np.sum((h - y) ** 2)
             self.cost_history_.append(cost)
 
-            # Print cost every 100 iterations
-            if i % 100 == 0:
+            # Print cost every 100 iterations if verbose
+            if self.verbose and i % 100 == 0:
                 print(f"Iteration {i}: Cost = {cost:.4f}")
 
         return self
@@ -230,11 +245,13 @@ class LinearRegression:
             y (np.ndarray): Target vector
         """
 
-        # Check for singularity
-        if np.linalg.matrix_rank(X.T.dot(X)) < X.shape[1]:
+        XT_X = X.T.dot(X)
+        XT_y = X.T.dot(y)
+        if np.linalg.matrix_rank(XT_X) == XT_X.shape[0]:
+            # Non-singular: use solve
+            self.weights_ = np.linalg.solve(XT_X, XT_y)
+        else:
             warnings.warn("X^T X is singular or nearly singular; using pseudo-inverse for normal equation.")
-
-        # Closed-form solution: weights = (X^T * X)^(-1) * X^T * y
-        self.weights_ = np.linalg.pinv(X.T.dot(X)).dot(X.T).dot(y)
+            self.weights_ = np.linalg.pinv(XT_X).dot(XT_y)
 
         return self
