@@ -42,7 +42,6 @@ def example_1d_simple():
     X_test_scaled = scaler.transform(X_test)
     print("Data transformation completed!")
 
-
     # Train with Gradient Descent
     model_gd = LinearRegression(learning_rate=0.01, n_iterations=1000, fit_intercept=True)
     method_gd = "gradient_descent"
@@ -152,11 +151,15 @@ def example_2d_multiple():
 
     print("\nResults (Gradient Descent):")
     print(f"Testing Set - R² Score: {r2_gd:.4f}, MSE: {mse_gd:.4f}")
-    print(f"Learned weights (original scale): size={weight_gd_unscaled:.2f}, bedroom={bedroom_gd_unscaled:.2f}, intercept={intercept_gd_unscaled:.2f}")
+    print(
+        f"Learned weights (original scale): size={weight_gd_unscaled:.2f}, bedroom={bedroom_gd_unscaled:.2f}, intercept={intercept_gd_unscaled:.2f}"
+    )
 
     print("\nResults (Normal Equation):")
     print(f"Testing Set - R² Score: {r2_ne:.4f}, MSE: {mse_ne:.4f}")
-    print(f"Learned weights (original scale): size={weight_ne_unscaled:.2f}, bedroom={bedroom_ne_unscaled:.2f}, intercept={intercept_ne_unscaled:.2f}")
+    print(
+        f"Learned weights (original scale): size={weight_ne_unscaled:.2f}, bedroom={bedroom_ne_unscaled:.2f}, intercept={intercept_ne_unscaled:.2f}"
+    )
 
     print("\nTrue weights:")
     print("size=150.00, bedroom=10000.00, intercept=20000.00")
