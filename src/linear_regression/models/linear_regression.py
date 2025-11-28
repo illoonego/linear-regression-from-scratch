@@ -229,5 +229,12 @@ class LinearRegression:
             X (np.ndarray): Feature matrix
             y (np.ndarray): Target vector
         """
-        # TODO: Implement normal equation
-        pass
+
+        # Check for singularity
+        if np.linalg.matrix_rank(X.T.dot(X)) < X.shape[1]:
+            warnings.warn("X^T X is singular or nearly singular; using pseudo-inverse for normal equation.")
+
+        # Closed-form solution: weights = (X^T * X)^(-1) * X^T * y
+        self.weights_ = np.linalg.pinv(X.T.dot(X)).dot(X.T).dot(y)
+
+        return self
