@@ -152,13 +152,17 @@ def example_2d_multiple():
     print("\nResults (Gradient Descent):")
     print(f"Testing Set - R² Score: {r2_gd:.4f}, MSE: {mse_gd:.4f}")
     print(
-        f"Learned weights (original scale): size={weight_gd_unscaled:.2f}, bedroom={bedroom_gd_unscaled:.2f}, intercept={intercept_gd_unscaled:.2f}"
+        f"Learned weights (original scale): size={weight_gd_unscaled:.2f}, "
+        f"bedroom={bedroom_gd_unscaled:.2f}, "
+        f"intercept={intercept_gd_unscaled:.2f}"
     )
 
     print("\nResults (Normal Equation):")
     print(f"Testing Set - R² Score: {r2_ne:.4f}, MSE: {mse_ne:.4f}")
     print(
-        f"Learned weights (original scale): size={weight_ne_unscaled:.2f}, bedroom={bedroom_ne_unscaled:.2f}, intercept={intercept_ne_unscaled:.2f}"
+        f"Learned weights (original scale): size={weight_ne_unscaled:.2f}, "
+        f"bedroom={bedroom_ne_unscaled:.2f}, "
+        f"intercept={intercept_ne_unscaled:.2f}"
     )
 
     print("\nTrue weights:")

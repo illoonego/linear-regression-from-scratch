@@ -18,6 +18,10 @@ This project implements linear regression algorithms **from first principles** w
 
 See the full project architecture in [DEVELOPMENT.md](DEVELOPMENT.md).
 
+## 📐 Mathematical Background
+
+For a detailed explanation of the mathematical foundations behind linear regression, see [docs/mathematical_background.md](docs/mathematical_background.md).
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -106,11 +110,12 @@ print(f"R² Score: {r2_score(price, predictions):.4f}")
 ## 📊 Current Features
 
 ### ✅ Implemented & Tested
-- **LinearRegression**: Complete implementation with gradient descent
-- **StandardScaler**: Feature standardization with robust validation  
-- **Examples**: Working 1D and 2D regression demonstrations
-- **Error Handling**: Comprehensive validation and edge case management
-- **Professional Structure**: PyPI-ready package with proper metadata
+ **LinearRegression**: Complete implementation with both gradient descent and normal equation (closed-form solution)
+ **StandardScaler**: Feature standardization with robust validation  
+ **Examples**: Working 1D and 2D regression demonstrations
+ **Error Handling**: Comprehensive input validation and edge case management
+ **Verbose Training Output**: Control progress printing with the `verbose` flag
+ **Professional Structure**: PyPI-ready package with proper metadata
 
 ### 🚧 Planned Features  
 - **Normal Equation**: Closed-form solution implementation
@@ -180,6 +185,18 @@ R² Score:        0.9234
 MSE:             89234567.12
 
 Comparison with True Values:
+model_gd = LinearRegression(learning_rate=0.01, n_iterations=1000, verbose=True)
+model_gd.fit(X, y, method='gradient_descent')
+predictions_gd = model_gd.predict(X)
+print(f"GD Weights: {model_gd.weights_}")
+print(f"GD R² Score: {r2_score(y, predictions_gd):.4f}")
+
+# Option 2: Normal Equation (closed-form)
+model_ne = LinearRegression(verbose=False)
+model_ne.fit(X, y, method='normal_equation')
+predictions_ne = model_ne.predict(X)
+print(f"NE Weights: {model_ne.weights_}")
+print(f"NE R² Score: {r2_score(y, predictions_ne):.4f}")
 True:    size=150.00, bedroom=10000.00, intercept=20000.00  
 Learned: size=149.87, bedroom=9989.23, intercept=20145.67
 Error:   size=0.13, bedroom=10.77, intercept=145.67
@@ -207,7 +224,6 @@ We welcome contributions! Please see:
 MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
-
 - Built for educational purposes to understand ML fundamentals
 - Mathematical foundations from "The Elements of Statistical Learning"
 - Inspired by the need for transparent, understandable ML implementations

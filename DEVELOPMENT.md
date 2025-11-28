@@ -45,7 +45,7 @@ linear-regression-from-scratch/
 │   ├── __init__.py                 ← Package initialization
 │   ├── models/                     ← ML model implementations  
 │   │   ├── __init__.py
-│   │   ├── linear_regression.py    ← ✅ LinearRegression (complete)
+│   │   ├── linear_regression.py    ← ✅ LinearRegression (gradient descent & normal equation)
 │   │   └── polynomial_regression.py ← 🚧 PolynomialRegression (planned)
 │   ├── preprocessing.py            ← ✅ StandardScaler (complete)
 │   ├── utils.py                    ← ✅ train_test_split (complete)
@@ -75,11 +75,14 @@ linear-regression-from-scratch/
 - [x] `train_test_split` utility
 - [x] `StandartScaler` for feature scaling
 - [x] LinearRegression (gradient descent)
-- [ ] LinearRegression (normal equation)
+- [x] LinearRegression (normal equation)
 - [ ] PolynomialRegression (feature transformation, integration)
-- [ ] Comprehensive test suite
-- [ ] Visual examples in notebooks
-- [ ] Documentation and README
+- [x] Comprehensive test suite
+- [x] Visual examples in notebooks
+- [x] Documentation and README
+## Mathematical Background
+
+For theory and equations, see [docs/mathematical_background.md](docs/mathematical_background.md).
 
 ### Advanced Features (Optional)
 - [ ] Additional optimizers (SGD, Mini-batch GD)
@@ -95,6 +98,7 @@ linear-regression-from-scratch/
 - Use feature branches and submit pull requests for review
 - Issues and TODOs are tracked in GitHub Issues and the project TODO list
 - For contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)
+- The LinearRegression class now supports a `verbose` flag for conditional training output and robust input validation for all public methods.
 
 ## Notebooks & Visual Examples
 - Add new Jupyter notebooks to the `notebooks/` folder
