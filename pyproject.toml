@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Your Name", email = "your.email@example.com"}
+    {name = "Illias", email = "illiasdadashov313@gmail.com"}
 ]
 keywords = ["machine-learning", "linear-regression", "education", "numpy"]
 classifiers = [
@@ -50,17 +50,17 @@ docs = [
     "sphinx>=4.0.0",
     "sphinx-rtd-theme>=1.0.0",
 ]
+
 [tool.ruff]
 line-length = 140
-[lint]
 select = ["E", "F", "I"]
 ignore = []
 src = ["src", "tests"]
 
 [project.urls]
-"Homepage" = "https://github.com/yourusername/linear-regression-from-scratch"
-"Bug Tracker" = "https://github.com/yourusername/linear-regression-from-scratch/issues"
-"Documentation" = "https://github.com/yourusername/linear-regression-from-scratch/docs"
+"Homepage" = "https://github.com/illo_one_go/linear-regression-from-scratch"
+"Bug Tracker" = "https://github.com/illo_one_go/linear-regression-from-scratch/issues"
+"Documentation" = "https://github.com/illo_one_go/linear-regression-from-scratch/docs"
 
 [tool.setuptools.packages.find]
 where = ["src"]
