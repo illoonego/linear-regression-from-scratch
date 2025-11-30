@@ -13,7 +13,7 @@ Implements linear regression using gradient descent.
 - `n_iterations` (int, default=1000): Number of iterations for gradient descent.
 - `fit_intercept` (bool, default=True): Whether to include an intercept term.
 
-**Note:** Normal equation method is not yet implemented.
+**Note:** Both gradient descent and normal equation methods are implemented.
 
 **Attributes:**
 - `weights_`: Model coefficients (and intercept if enabled)
@@ -46,11 +46,17 @@ Implements linear regression using gradient descent.
 	- **Returns:** np.ndarray
 
 **Limitations:**
-- Only gradient descent is implemented; normal equation is a placeholder.
+- Both gradient descent and normal equation are implemented.
 - Does not support categorical features.
 - No built-in regularization.
 **Example:**
 ```python
+y = np.array([2, 4, 6, 8, 10])
+predictions = model.predict(X)
+
+# Install from PyPI
+pip install linear-regression-from-scratch
+
 from linear_regression.models.linear_regression import LinearRegression
 import numpy as np
 X = np.array([[1], [2], [3], [4], [5]])

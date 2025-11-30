@@ -32,8 +32,12 @@ pip install -e ".[dev,notebooks,docs]"
 - **Testing:**
   - Run `pytest` for all tests
   - Run `pytest --cov=src/linear_regression --cov-report=html` for coverage
-- **Continuous Integration:**
-  - All pushes and pull requests are checked by GitHub Actions (tests, lint, coverage)
+
+- **Continuous Integration & Delivery (CI/CD):**
+  - All pushes and pull requests are checked by GitHub Actions for tests, lint, and coverage (`python-ci.yml`).
+  - Releases are published to PyPI automatically when a new version tag (e.g., `v1.0.0`) is pushed (`python-cd.yml`).
+  - PyPI credentials are stored securely as GitHub repository secrets (`PYPI_API_TOKEN`).
+  - See `.github/workflows/` for workflow files.
 
 ## Project Structure
 ```
@@ -70,6 +74,14 @@ linear-regression-from-scratch/
 **Legend**: ✅ Complete | 🚧 Planned/In Progress
 
 ## Implementation Checklist
+
+## Release & Publishing Workflow
+
+1. Update code and documentation as needed.
+2. Push changes to main branch and ensure CI passes.
+3. Tag a new release (e.g., `git tag v1.0.0 && git push origin v1.0.0`).
+4. GitHub Actions CD workflow will build and publish the package to PyPI automatically.
+5. Verify the release on [PyPI](https://pypi.org/project/linear-regression-from-scratch/).
 
 ### Core Features
 - [x] `train_test_split` utility
