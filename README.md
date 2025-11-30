@@ -68,10 +68,10 @@ python examples/basic_linear_regression.py 2d    # Multiple regression
 
 #### Simple Linear Regression
 ```python
-from linear_regression.models.linear_regression import LinearRegression
-from linear_regression.preprocessing import StandartScaler
-from linear_regression.metrics import r2_score
 import numpy as np
+from linear_regression.models.linear_regression import LinearRegression
+from linear_regression.preprocessing import StandardScaler
+from linear_regression.metrics import r2_score
 
 # Create sample data
 X = np.array([[1], [2], [3], [4], [5]])
@@ -81,35 +81,39 @@ y = np.array([2.1, 3.9, 6.1, 8.0, 9.9])  # y ≈ 2x with noise
 model = LinearRegression(learning_rate=0.01, n_iterations=1000)
 model.fit(X, y, method='gradient_descent')
 predictions = model.predict(X)
-
 print(f"Weights: {model.weights_}")
 print(f"R² Score: {r2_score(y, predictions):.4f}")
 
-# Option 2: With preprocessing  
-scaler = StandartScaler()
+# Option 2: With preprocessing
+scaler = StandardScaler()
 X_scaled = scaler.fit(X).transform(X)
 model.fit(X_scaled, y)
+predictions_scaled = model.predict(X_scaled)
+print(f"Weights (scaled): {model.weights_}")
+print(f"R² Score (scaled): {r2_score(y, predictions_scaled):.4f}")
 ```
 
 #### Multiple Linear Regression  
 ```python
+import numpy as np
+from linear_regression.models.linear_regression import LinearRegression
+from linear_regression.metrics import r2_score
+
 # House price prediction example
 np.random.seed(42)
 size_sqft = np.random.uniform(800, 2500, 100)
-bedrooms = np.random.randint(1, 5, 100)  
+bedrooms = np.random.randint(1, 5, 100)
 X = np.column_stack((size_sqft, bedrooms))
 
 # True relationship: price = 150*size + 10000*bedrooms + 20000 + noise
 price = 150 * size_sqft + 10000 * bedrooms + 20000 + np.random.randn(100) * 10000
 
-predictions = model.predict(X)
 model = LinearRegression(learning_rate=1e-7, n_iterations=5000)
 model.fit(X, price)
 predictions = model.predict(X)
 
 print(f"Learned coefficients: {model.weights_[1:]}")  # [size_coef, bedroom_coef]
 print(f"Intercept: {model.weights_[0]}")
-from linear_regression.metrics import r2_score
 print(f"R² Score: {r2_score(price, predictions):.4f}")
 ```
 

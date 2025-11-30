@@ -8,7 +8,7 @@ import numpy as np
 
 from linear_regression.metrics import mean_squared_error, r2_score
 from linear_regression.models.linear_regression import LinearRegression
-from linear_regression.preprocessing import StandartScaler
+from linear_regression.preprocessing import StandardScaler
 from linear_regression.utils import train_test_split
 
 
@@ -32,7 +32,7 @@ def example_1d_simple():
 
     # Preprocess features
     print("\nPreprocessing features with StandardScaler...")
-    scaler = StandartScaler()
+    scaler = StandardScaler()
     print("Fitting scaler on training data...")
     scaler.fit(X_train)
     print("Scaler fitted on training data!")
@@ -106,7 +106,7 @@ def example_2d_multiple():
 
     # Preprocess features
     print("\nPreprocessing features with StandardScaler...")
-    scaler = StandartScaler()
+    scaler = StandardScaler()
 
     print("Fitting scaler on training data...")
     scaler.fit(X_train)

@@ -1,20 +1,20 @@
 import numpy as np
 
 
-class StandartScaler:
+class StandardScaler:
     """Features scaler from scratch.
 
     This class standardizes features by removing the mean and scaling to unit variance.
 
     Example:
-            >>> from linear_regression.preprocessing.standart_scaler import StandartScaler
+            >>> from linear_regression.preprocessing import StandardScaler
             >>> import numpy as np
             >>>
             >>> # Create sample data
             >>> X = np.array([[1, 2], [3, 4], [5, 6]])
             >>>
             >>> # Create and fit scaler
-            >>> scaler = StandartScaler()
+            >>> scaler = StandardScaler()
             >>> scaler.fit(X)
             >>>
             >>> # Transform data
@@ -22,7 +22,7 @@ class StandartScaler:
     """
 
     def __init__(self):
-        """Initialize StandartScaler."""
+        """Initialize StandardScaler."""
         self.mean_ = None
         self.std_ = None
         self.is_fitted_ = False

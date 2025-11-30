@@ -80,9 +80,9 @@ predictions = model.predict(X)
 
 ## linear_regression.preprocessing
 
-### StandartScaler
+### StandardScaler
 ```python
-class StandartScaler()
+class StandardScaler()
 ```
 Standardizes features by removing the mean and scaling to unit variance.
 
@@ -114,10 +114,10 @@ Standardizes features by removing the mean and scaling to unit variance.
 - Only supports numeric features.
 **Example:**
 ```python
-from linear_regression.preprocessing import StandartScaler
+from linear_regression.preprocessing import StandardScaler
 import numpy as np
 X = np.array([[1, 2], [3, 4], [5, 6]])
-scaler = StandartScaler()
+scaler = StandardScaler()
 scaler.fit(X)
 X_scaled = scaler.transform(X)
 ```

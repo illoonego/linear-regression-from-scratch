@@ -1,12 +1,12 @@
 import numpy as np
 import pytest
 
-from linear_regression.preprocessing import StandartScaler
+from linear_regression.preprocessing import StandardScaler
 
 
 def test_fit_and_transform_normal_data(synthetic_data):
     X, _ = synthetic_data
-    scaler = StandartScaler()
+    scaler = StandardScaler()
     scaler.fit(X)
     X_scaled = scaler.transform(X)
     # Check mean and std
@@ -16,7 +16,7 @@ def test_fit_and_transform_normal_data(synthetic_data):
 
 def test_constant_feature_handling(constant_feature_2d):
     X = constant_feature_2d
-    scaler = StandartScaler()
+    scaler = StandardScaler()
     scaler.fit(X)
     # std for first column should be 1.0 (replaced)
     assert scaler.std_[0] == 1.0
@@ -27,14 +27,14 @@ def test_constant_feature_handling(constant_feature_2d):
 
 def test_transform_before_fit_raises():
     X = np.array([[1, 2], [3, 4]])
-    scaler = StandartScaler()
+    scaler = StandardScaler()
     with pytest.raises(RuntimeError, match="Scaler must be fitted before transform"):
         scaler.transform(X)
 
 
 def test_transform_mismatched_feature_count_raises(synthetic_data, mismatched_feature_count_2d):
     X, _ = synthetic_data
-    scaler = StandartScaler()
+    scaler = StandardScaler()
     scaler.fit(X)
     X_bad = mismatched_feature_count_2d
     with pytest.raises(ValueError, match="Input data must have 1 features"):
@@ -42,14 +42,14 @@ def test_transform_mismatched_feature_count_raises(synthetic_data, mismatched_fe
 
 
 def test_validate_input_non_2d_raises(one_d_array):
-    scaler = StandartScaler()
+    scaler = StandardScaler()
     X = one_d_array
     with pytest.raises(ValueError, match="Expected 2D array"):
         scaler._validate_input(X)
 
 
 def test_validate_input_nan_inf_raises(nan_2d, inf_2d):
-    scaler = StandartScaler()
+    scaler = StandardScaler()
     X_nan = nan_2d
     X_inf = inf_2d
     with pytest.raises(ValueError, match="Input data contains NaN or infinite values"):
