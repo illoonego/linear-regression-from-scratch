@@ -29,34 +29,40 @@ For a detailed explanation of the mathematical foundations behind linear regress
 - pip package manager
 
 
+
 ### Installation
 
-1. **Clone & Setup:**
-  ```bash
-  git clone https://github.com/illoonego/linear-regression-from-scratch.git
-  cd linear-regression-from-scratch
+**Option 1: Install from PyPI (recommended)**
+```bash
+pip install linear-regression-from-scratch
+```
 
-  # Create virtual environment
-  python -m venv venv
-  source venv/bin/activate  # On Windows: venv\Scripts\activate
+**Option 2: Clone & Setup for development**
+```bash
+git clone https://github.com/illoonego/linear-regression-from-scratch.git
+cd linear-regression-from-scratch
 
-  # Install all dependencies using pyproject.toml (PEP 621)
-  pip install -e .[dev]
-  # For optional dependencies (notebooks, docs):
-  pip install -e ".[notebooks,docs]"
-  ```
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-> **Note:** All dependencies are now managed via `pyproject.toml`. The legacy `requirements.txt` file has been removed for clarity and modern Python packaging best practices.
+# Install all dependencies using pyproject.toml (PEP 621)
+pip install -e .[dev]
+# For optional dependencies (notebooks, docs):
+pip install -e ".[notebooks,docs]"
+```
 
-2. **Run Examples:**
-   ```bash
-   # Run all examples
-   python examples/basic_linear_regression.py
-   
-   # Run specific examples  
-   python examples/basic_linear_regression.py 1d    # Simple regression
-   python examples/basic_linear_regression.py 2d    # Multiple regression
-   ```
+> **Note:** All dependencies are managed via `pyproject.toml`. The legacy `requirements.txt` file has been removed for clarity and modern Python packaging best practices.
+
+### Running Examples
+```bash
+# Run all examples
+python examples/basic_linear_regression.py
+
+# Run specific examples
+python examples/basic_linear_regression.py 1d    # Simple regression
+python examples/basic_linear_regression.py 2d    # Multiple regression
+```
 
 ### Basic Usage
 
@@ -139,8 +145,15 @@ pytest --cov=src/linear_regression --cov-report=term-missing
 pytest tests/test_linear_regression.py -v
 ```
 
-### Continuous Integration (CI)
-This project uses GitHub Actions to automatically run tests, linting (ruff), formatting checks (black), and coverage reporting on every push and pull request. The workflow is defined in `.github/workflows/python-ci.yml` and tests against multiple Python versions.
+
+### Continuous Integration & Delivery (CI/CD)
+This project uses GitHub Actions for:
+- **CI:** Automatic tests, linting (ruff), formatting checks (black), and coverage reporting on every push and pull request. See `.github/workflows/python-ci.yml`.
+- **CD:** Automated publishing to PyPI on new version tags. See `.github/workflows/python-cd.yml`.
+
+**How releases work:**
+- When a new version tag (e.g., `v1.0.0`) is pushed, the CD workflow builds and publishes the package to PyPI using secure repository secrets.
+- See [DEVELOPMENT.md](DEVELOPMENT.md) for more on the release workflow.
 
 ### Code Quality
 ```bash
