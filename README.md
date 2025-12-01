@@ -69,9 +69,7 @@ python examples/basic_linear_regression.py 2d    # Multiple regression
 #### Simple Linear Regression
 ```python
 import numpy as np
-from linear_regression.models.linear_regression import LinearRegression
-from linear_regression.preprocessing import StandardScaler
-from linear_regression.metrics import r2_score
+from linear_regression import LinearRegression, StandardScaler, r2_score
 
 # Create sample data
 X = np.array([[1], [2], [3], [4], [5]])
@@ -96,8 +94,7 @@ print(f"R² Score (scaled): {r2_score(y, predictions_scaled):.4f}")
 #### Multiple Linear Regression  
 ```python
 import numpy as np
-from linear_regression.models.linear_regression import LinearRegression
-from linear_regression.metrics import r2_score
+from linear_regression import LinearRegression, r2_score
 
 # House price prediction example
 np.random.seed(42)
@@ -128,12 +125,7 @@ print(f"R² Score: {r2_score(price, predictions):.4f}")
  **Professional Structure**: PyPI-ready package with proper metadata
 
 ### 🚧 Planned Features  
-- **Normal Equation**: Closed-form solution implementation
-- **PolynomialRegression**: Non-linear relationship modeling
-- **Advanced Optimizers**: SGD, Mini-batch GD, Adam
-- **Regularization**: Ridge (L2) and Lasso (L1) regression
-- **Visualization Tools**: Plotting utilities for analysis
-- **Jupyter Tutorials**: Interactive learning notebooks
+See the [DEVELOPMENT.md](DEVELOPMENT.md) for the full roadmap and planned features.
 
 ## 🧪 Testing & Development
 
