@@ -54,11 +54,8 @@ Implements linear regression using gradient descent.
 y = np.array([2, 4, 6, 8, 10])
 predictions = model.predict(X)
 
-# Install from PyPI
-pip install linear-regression-from-scratch
-
-from linear_regression.models.linear_regression import LinearRegression
 import numpy as np
+from linear_regression import LinearRegression
 X = np.array([[1], [2], [3], [4], [5]])
 y = np.array([2, 4, 6, 8, 10])
 model = LinearRegression()
@@ -80,9 +77,9 @@ predictions = model.predict(X)
 
 ## linear_regression.preprocessing
 
-### StandartScaler
+### StandardScaler
 ```python
-class StandartScaler()
+class StandardScaler()
 ```
 Standardizes features by removing the mean and scaling to unit variance.
 
@@ -114,10 +111,10 @@ Standardizes features by removing the mean and scaling to unit variance.
 - Only supports numeric features.
 **Example:**
 ```python
-from linear_regression.preprocessing import StandartScaler
 import numpy as np
+from linear_regression import StandardScaler
 X = np.array([[1, 2], [3, 4], [5, 6]])
-scaler = StandartScaler()
+scaler = StandardScaler()
 scaler.fit(X)
 X_scaled = scaler.transform(X)
 ```

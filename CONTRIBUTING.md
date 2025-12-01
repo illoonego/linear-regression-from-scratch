@@ -23,6 +23,11 @@ Thank you for your interest in contributing! This guide will help you get starte
   pip install -e .
   pip install -e ".[dev,notebooks,docs]"
   ```
+4. **Use Top-Level Imports**
+  - When writing examples, tests, or documentation, use top-level imports for public API:
+    ```python
+    from linear_regression import LinearRegression, StandardScaler, r2_score, mean_squared_error, train_test_split
+    ```
 4. **Run Tests**
   ```bash
   pytest
@@ -98,6 +103,7 @@ For questions or concerns, contact the project maintainer.
 - Use [isort](https://pycqa.github.io/isort/) for import sorting.
 - Write clear, concise docstrings and comments.
 - Add or update tests for all new features and bug fixes.
+- Use correct naming: `StandardScaler` (not `StandartScaler`).
 
 ---
 

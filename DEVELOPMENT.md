@@ -75,6 +75,14 @@ linear-regression-from-scratch/
 
 ## Implementation Checklist
 
+### Planned Features & Roadmap
+- **Normal Equation**: Closed-form solution implementation
+- **PolynomialRegression**: Non-linear relationship modeling
+- **Advanced Optimizers**: SGD, Mini-batch GD, Adam
+- **Regularization**: Ridge (L2) and Lasso (L1) regression
+- **Visualization Tools**: Plotting utilities for analysis
+- **Jupyter Tutorials**: Interactive learning notebooks
+
 ## Release & Publishing Workflow
 
 1. Update code and documentation as needed.
