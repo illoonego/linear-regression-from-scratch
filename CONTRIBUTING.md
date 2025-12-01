@@ -1,4 +1,3 @@
-
 # Contributing to linear-regression-from-scratch
 
 Thank you for your interest in contributing! This guide will help you get started and ensure a smooth development experience for everyone.
@@ -131,6 +130,18 @@ For questions or concerns, contact the project maintainer.
 - Check the TODO list and open issues for tasks.
 - Ask questions via Issues or Discussions if you need help.
 - Be respectful and collaborative in all interactions.
+
+---
+
+## CI/CD Workflows
+
+This project uses GitHub Actions for:
+- **CI:** Automatic tests, linting, formatting, and coverage on every push and pull request. See `.github/workflows/python-ci.yml`.
+- **CD:**
+  - **PyPI:** Automated publishing to PyPI on new version tags. See `.github/workflows/pypi-cd.yml`.
+  - **TestPyPI:** Automated publishing to TestPyPI on test tags (e.g., `test-v1.0.0`). See `.github/workflows/testpypi-cd.yml`.
+
+Refer to [DEVELOPMENT.md](DEVELOPMENT.md) for more on the release workflow.
 
 ---
 

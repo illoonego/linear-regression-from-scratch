@@ -1,4 +1,3 @@
-
 # Development Guide
 
 This document provides all the information needed for smooth development and collaboration on the linear-regression-from-scratch project.
@@ -35,7 +34,8 @@ pip install -e ".[dev,notebooks,docs]"
 
 - **Continuous Integration & Delivery (CI/CD):**
   - All pushes and pull requests are checked by GitHub Actions for tests, lint, and coverage (`python-ci.yml`).
-  - Releases are published to PyPI automatically when a new version tag (e.g., `v1.0.0`) is pushed (`python-cd.yml`).
+  - Releases are published to PyPI automatically when a new version tag (e.g., `v1.0.0`) is pushed (`pypi-cd.yml`).
+  - Test releases are published to TestPyPI automatically when a test tag (e.g., `test-v1.0.0`) is pushed (`testpypi-cd.yml`).
   - PyPI credentials are stored securely as GitHub repository secrets (`PYPI_API_TOKEN`).
   - See `.github/workflows/` for workflow files.
 
@@ -68,7 +68,12 @@ linear-regression-from-scratch/
 ├── docs/                           ← Documentation
 │   ├── mathematical_background.md  ← Theory and equations
 │   └── api_reference.md            ← API documentation
-└── DEVELOPMENT.md                  ← Development workflow
+├── DEVELOPMENT.md                  ← Development workflow
+├── .github/
+│   └── workflows/
+│       ├── python-ci.yml            ← CI: tests, lint, coverage
+│       ├── pypi-cd.yml              ← CD: PyPI publishing
+│       └── testpypi-cd.yml          ← CD: TestPyPI publishing
 ```
 
 **Legend**: ✅ Complete | 🚧 Planned/In Progress
