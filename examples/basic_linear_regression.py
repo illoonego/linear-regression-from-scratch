@@ -6,10 +6,7 @@ for simple and multiple linear regression tasks.
 
 import numpy as np
 
-from linear_regression.metrics import mean_squared_error, r2_score
-from linear_regression.models.linear_regression import LinearRegression
-from linear_regression.preprocessing import StandardScaler
-from linear_regression.utils import train_test_split
+from linear_regression import mean_squared_error, r2_score, LinearRegression, StandardScaler, train_test_split
 
 
 def example_1d_simple():
