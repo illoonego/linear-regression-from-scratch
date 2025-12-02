@@ -16,11 +16,11 @@ This project implements linear regression algorithms **from first principles** w
 
 ## 📁 Project Architecture
 
-See the full project architecture in [DEVELOPMENT.md](DEVELOPMENT.md).
+See the full project architecture in [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/DEVELOPMENT.md).
 
 ## 📐 Mathematical Background
 
-For a detailed explanation of the mathematical foundations behind linear regression, see [docs/mathematical_background.md](docs/mathematical_background.md).
+For a detailed explanation of the mathematical foundations behind linear regression, see [mathematical_background.md](docs/mathematical_background.md).
 
 ## 🚀 Quick Start
 
@@ -34,7 +34,7 @@ For a detailed explanation of the mathematical foundations behind linear regress
 
 **Option 1: Install from PyPI (recommended)**
 ```bash
-pip install linear-regression-from-scratch
+pip install linreg-from-scratch
 ```
 
 **Option 2: Clone & Setup for development**
@@ -125,7 +125,7 @@ print(f"R² Score: {r2_score(price, predictions):.4f}")
  **Professional Structure**: PyPI-ready package with proper metadata
 
 ### 🚧 Planned Features  
-See the [DEVELOPMENT.md](DEVELOPMENT.md) for the full roadmap and planned features.
+See the [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/DEVELOPMENT.md) for the full roadmap and planned features.
 
 ## 🧪 Testing & Development
 
@@ -149,7 +149,7 @@ This project uses GitHub Actions for:
 
 **How releases work:**
 - When a new version tag (e.g., `v1.0.0`) is pushed, the CD workflow builds and publishes the package to PyPI using secure repository secrets.
-- See [DEVELOPMENT.md](DEVELOPMENT.md) for more on the release workflow.
+- See [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/DEVELOPMENT.md) for more on the release workflow.
 
 ### Code Quality
 ```bash
@@ -224,13 +224,9 @@ This project demonstrates:
 ## 🤝 Contributing
 
 We welcome contributions! Please see:
-- [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and onboarding
-- [DEVELOPMENT.md](DEVELOPMENT.md) for development workflow
+- [CONTRIBUTING.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/CONTRIBUTING.md) for guidelines and onboarding
+- [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/DEVELOPMENT.md) for development workflow
 - [Issues](https://github.com/illoonego/linear-regression-from-scratch/issues) for bug reports and feature requests
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 - Built for educational purposes to understand ML fundamentals
