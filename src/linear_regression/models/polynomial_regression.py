@@ -4,6 +4,9 @@ This module contains the PolynomialRegression class that implements
 polynomial regression by extending linear regression with polynomial features.
 """
 
+import warnings
+
+from .linear_regression import LinearRegression
 
 class PolynomialRegression:
     """Polynomial Regression implementation from scratch.
@@ -31,7 +34,7 @@ class PolynomialRegression:
         >>> predictions = model.predict(X)
     """
 
-    def __init__(self, degree=2, learning_rate=0.01, n_iterations=1000, fit_intercept=True):  # pragma: no cover
+    def __init__(self, degree=2, learning_rate=0.01, n_iterations=1000, fit_intercept=True, verbose=True):
         """Initialize PolynomialRegression model.
 
         Args:
@@ -39,9 +42,34 @@ class PolynomialRegression:
             learning_rate (float): Learning rate for gradient descent
             n_iterations (int): Number of iterations for gradient descent
             fit_intercept (bool): Whether to fit intercept term
+            verbose (bool): Whether to print progress during training
         """
-        # TODO: Implement initialization
-        pass
+        # ===== INPUT VALIDATION =====
+        # Basic validation
+        if not isinstance(degree, int):
+            raise TypeError("degree must be an integer value")
+        if degree < 1:
+            raise ValueError("degree must be at least 1")
+
+        # Warning validation
+        if degree > 10:
+            warnings.warn("Using a high degree may lead to overfitting")
+        
+        # ===== INITIALIZATION =====
+        # Store hyperparameters
+        self.degree = degree
+
+        # Initialize underlying linear regression model
+        self.linear_model_ = LinearRegression(
+            learning_rate=learning_rate,
+            n_iterations=n_iterations,
+            fit_intercept=fit_intercept,
+            verbose=verbose
+        )
+
+        # Initialize state
+        self.is_fitted_ = False
+        self.n_features_ = None
 
     def fit(self, X, y, method="gradient_descent"):  # pragma: no cover
         """Fit the polynomial regression model to training data.
