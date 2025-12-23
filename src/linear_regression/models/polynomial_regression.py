@@ -5,6 +5,8 @@ polynomial regression by extending linear regression with polynomial features.
 """
 
 import warnings
+import numpy as np
+from itertools import combinations_with_replacement
 
 from .linear_regression import LinearRegression
 
@@ -110,8 +112,8 @@ class PolynomialRegression:
         # TODO: Implement R² calculation
         pass
 
-    def _create_polynomial_features(self, X):  # pragma: no cover
-        """Transform features into polynomial features.
+    def _create_polynomial_features(self, X):
+        """Transform features into polynomial features (with cross-terms).
 
         Args:
             X (np.ndarray): Input features of shape (n_samples, n_features)
@@ -119,5 +121,23 @@ class PolynomialRegression:
         Returns:
             np.ndarray: Polynomial features of shape (n_samples, n_poly_features)
         """
-        # TODO: Implement polynomial feature transformation
-        pass
+
+        # Ensure X is a numpy array (robust to list input)
+        X = np.array(X)
+
+        # List to collect all new polynomial features
+        X_poly = []
+
+        # For each degree from 1 up to self.degree (inclusive)
+        for d in range(1, self.degree + 1):
+            # Generate all combinations of feature indices (with replacement)
+            # Each combination represents a monomial (e.g., (0, 1) -> x0*x1)
+            for items in combinations_with_replacement(range(X.shape[1]), d):
+                # For each sample, multiply the selected columns together
+                # Example: items = (0, 1, 1) means x0 * x1^2
+                new_feature = np.prod(X[:, items], axis=1).reshape(-1, 1)
+                X_poly.append(new_feature)
+
+        # Stack all new features horizontally to form the final feature matrix
+        # The result shape is (n_samples, n_poly_features)
+        return np.hstack(X_poly)
