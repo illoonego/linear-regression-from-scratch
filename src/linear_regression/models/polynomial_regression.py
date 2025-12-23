@@ -145,19 +145,6 @@ class PolynomialRegression:
         # Return predictions from underlying linear model
         return self.linear_model_.predict(X_poly)
 
-    def score(self, X, y):  # pragma: no cover
-        """Calculate R² score (coefficient of determination).
-
-        Args:
-            X (np.ndarray): Features of shape (n_samples, n_features)
-            y (np.ndarray): True targets of shape (n_samples,)
-
-        Returns:
-            float: R² score
-        """
-        # TODO: Implement R² calculation
-        pass
-
     def _create_polynomial_features(self, X):
         """Transform features into polynomial features (with cross-terms).
 
