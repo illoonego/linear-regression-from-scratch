@@ -46,6 +46,7 @@ class PolynomialRegression:
             fit_intercept (bool): Whether to fit intercept term
             verbose (bool): Whether to print progress during training
         """
+        
         # ===== INPUT VALIDATION =====
         # Basic validation
         if not isinstance(degree, int):
@@ -84,8 +85,32 @@ class PolynomialRegression:
         Returns:
             self: Returns self for method chaining
         """
-        # TODO: Implement fitting logic with polynomial features
-        pass
+        # === INPUT VALIDATION ===
+        # Ensure X and y are numy arrays
+        X = np.array(X)
+        y = np.array(y)
+
+        # Check dimensions
+        if X.ndim != 2:
+            raise ValueError("X must be a 2D array")
+        if y.ndim != 1:
+            raise ValueError("y must be a 1D array")
+        if X.shape[0] != y.shape[0]:
+            raise ValueError("Number of samples in X and y must be equal")
+        
+        # Store the number of original features for later validation
+        self.n_features_ = X.shape[1]
+        
+        # === TRANSFORM FEATURES ===
+        X_poly = self._create_polynomial_features(X)
+
+        # === FIT LINEAR MODEL ===
+        self.linear_model_.fit(X_poly, y, method=method)
+
+        # Mark the model as fitted
+        self.is_fitted_ = True
+
+        return self
 
     def predict(self, X):  # pragma: no cover
         """Make predictions using the trained model.
@@ -96,8 +121,29 @@ class PolynomialRegression:
         Returns:
             np.ndarray: Predictions of shape (n_samples,)
         """
-        # TODO: Implement prediction logic
-        pass
+        
+        # ===== INPUT VALIDATION =====
+        # Checjk if model is fitted
+        if not self.is_fitted_:
+            raise ValueError("Model has not been fitted yet. Call fit() first.")
+        
+        # Convert X to numpy array
+        X = np.array(X)
+
+        # Check dimensions
+        if X.ndim != 2:
+            raise ValueError(f"X must be a 2D array, got {X.ndim}D array instead")
+        
+        # Check that X is the same number of features as training data
+        if X.shape[1] != self.n_features_:
+            raise ValueError(f"Input features have {X.shape[1]} columns, but model was trained with {self.n_features_} features.")
+        
+        # === TRANSFORM FEATURES ===
+        X_poly = self._create_polynomial_features(X)
+
+        # ===== PREDICTION LOGIC =====
+        # Return predictions from underlying linear model
+        return self.linear_model_.predict(X_poly)
 
     def score(self, X, y):  # pragma: no cover
         """Calculate R² score (coefficient of determination).
