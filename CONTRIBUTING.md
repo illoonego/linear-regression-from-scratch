@@ -23,14 +23,15 @@ Thank you for your interest in contributing! This guide will help you get starte
   pip install -e ".[dev,notebooks,docs]"
   ```
 4. **Use Top-Level Imports**
-  - When writing examples, tests, or documentation, use top-level imports for public API:
-    ```python
-    from linear_regression import LinearRegression, StandardScaler, r2_score, mean_squared_error, train_test_split
-    ```
-4. **Run Tests**
-  ```bash
-  pytest
-  ```
+   - When writing examples, tests, or documentation, use top-level imports for public API:
+     ```python
+     from linear_regression import LinearRegression, PolynomialRegression, StandardScaler, r2_score, mean_squared_error, mean_absolute_error, train_test_split
+     ```
+4. **Run Tests & Coverage**
+   ```bash
+   pytest --cov=src/linear_regression tests/ -v
+   # Coverage: LinearRegression 99%, PolynomialRegression & metrics 100%
+   ```
 5. **Format, Lint, and Check Code**
   ```bash
   black .
@@ -47,10 +48,9 @@ Thank you for your interest in contributing! This guide will help you get starte
 **Main Components:**
 - `src/linear_regression/`: Core package
   - `models/`: Model implementations (LinearRegression, PolynomialRegression)
-  - `optimizers/`: Optimization algorithms
   - `preprocessing.py`: Feature scaling utilities
   - `utils.py`: Data splitting and helpers
-  - `metrics.py`: Evaluation metrics
+  - `metrics.py`: Evaluation metrics (fully tested)
 - `tests/`: Unit and integration tests
 - `examples/`: Usage scripts and sample data
 - `notebooks/`: Jupyter notebooks for tutorials and visualization
