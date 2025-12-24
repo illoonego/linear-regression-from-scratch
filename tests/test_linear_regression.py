@@ -108,18 +108,53 @@ class TestLinearRegression:
 
     def test_add_intercept(self, model):
         """Test intercept addition."""
-        # TODO: Test intercept functionality
-        pass
+        # Create a simple feature matrix
+        X = np.array([[10, 20], [30, 40], [50, 60]])
+        # Call the private method directly
+        X_with_intercept = model._add_intercept(X)
+        # Check shape: should have one more column
+        assert X_with_intercept.shape == (3, 3)
+        # Check that the first column is all ones
+        assert np.all(X_with_intercept[:, 0] == 1)
+        # Check that the remaining columns match the original X
+        assert np.all(X_with_intercept[:, 1:] == X)
 
-    def test_simple_linear_regression(self):
+    def test_simple_linear_regression(self, model):
         """Test simple linear regression on known data."""
-        # TODO: Test on y = 2x + 1 type data
-        pass
+        # Create noise-free data: y = 2x + 1
+        X = np.array([[1], [2], [3], [4], [5]])
+        y = 2 * X.flatten() + 1
+        model.fit(X, y, method="gradient_descent")
+        y_pred = model.predict(X)
+        # Predictions should be very close to y
+        assert np.allclose(y_pred, y, atol=1e-1)
+        # Weights: intercept (weights_[0]), slope (weights_[1])
+        assert np.isclose(model.weights_[0], 1, atol=1e-1)
+        assert np.isclose(model.weights_[1], 2, atol=1e-1)
+        # R² score should be very close to 1
+        ss_res = np.sum((y - y_pred) ** 2)
+        ss_tot = np.sum((y - np.mean(y)) ** 2)
+        r2 = 1 - ss_res / ss_tot
+        assert r2 > 0.999
 
-    def test_multiple_linear_regression(self):
+    def test_multiple_linear_regression(self, model):
         """Test multiple linear regression."""
-        # TODO: Test on multiple features
-        pass
+        # Create noise-free data: y = 3*x1 + 2*x2 + 5
+        X = np.array([[1, 2], [2, 1], [3, 4], [4, 3], [5, 5]])
+        y = 3 * X[:, 0] + 2 * X[:, 1] + 5
+        model.fit(X, y, method="gradient_descent")
+        y_pred = model.predict(X)
+        # Predictions should be very close to y
+        assert np.allclose(y_pred, y, atol=1.0)
+        # Weights: intercept (weights_[0]), x1 (weights_[1]), x2 (weights_[2])
+        assert np.isclose(model.weights_[0], 5, atol=1.0)
+        assert np.isclose(model.weights_[1], 3, atol=1.0)
+        assert np.isclose(model.weights_[2], 2, atol=1.0)
+        # R² score should be very close to 1
+        ss_res = np.sum((y - y_pred) ** 2)
+        ss_tot = np.sum((y - np.mean(y)) ** 2)
+        r2 = 1 - ss_res / ss_tot
+        assert r2 > 0.99
 
     def test_edge_cases(self):
         """Test edge cases and error handling."""
@@ -157,3 +192,71 @@ class TestLinearRegression:
         model_silent.fit(X, y, method="gradient_descent")
         out_silent = capsys.readouterr().out
         assert "Iteration" not in out_silent
+
+    def test_input_validation_and_warnings(self, model, synthetic_data, one_d_array, nan_2d, inf_2d, mismatched_feature_count_2d):
+        """Test input validation and warnings in fit and predict using fixtures."""
+        X, y = synthetic_data
+        # 1. Large learning_rate warning
+        with pytest.warns(UserWarning, match="Large learning_rate may cause convergence issues"):
+            LinearRegression(learning_rate=2.0)
+        # 2. Few n_iterations warning
+        with pytest.warns(UserWarning, match="Very few iterations may not converge"):
+            LinearRegression(n_iterations=5)
+        # 3. Non-bool verbose
+        with pytest.raises(TypeError, match="verbose must be a boolean value"):
+            LinearRegression(verbose="yes")
+        # 4. X not 2D
+        y1 = np.array([1, 2, 3])
+        with pytest.raises(ValueError, match="X must be a 2D array"):
+            model.fit(one_d_array, y1)
+        # 5. y not 1D
+        X2 = np.array([[1, 2], [3, 4]])
+        y2 = np.array([[1, 2], [3, 4]])
+        with pytest.raises(ValueError, match="y must be a 1D array"):
+            model.fit(X2, y2)
+        # 6. Mismatched sample counts
+        X3 = np.array([[1, 2], [3, 4]])
+        y3 = np.array([1])
+        with pytest.raises(ValueError, match="Number of samples in X and y must be equal"):
+            model.fit(X3, y3)
+        # 7. <2 samples
+        X4 = np.array([[1, 2]])
+        y4 = np.array([1])
+        with pytest.raises(ValueError, match="At least 2 data points are required"):
+            model.fit(X4, y4)
+        # 8. <1 feature
+        X5 = np.empty((2, 0))
+        y5 = np.array([1, 2])
+        with pytest.raises(ValueError, match="At least 1 feature is required"):
+            model.fit(X5, y5)
+        # 9. Non-numeric/infinite X (NaN)
+        y6 = np.array([1, 2])
+        with pytest.raises(ValueError, match="X contains non-numeric or infinite values"):
+            model.fit(nan_2d, y6)
+        # 10. Non-numeric/infinite X (inf)
+        with pytest.raises(ValueError, match="X contains non-numeric or infinite values"):
+            model.fit(inf_2d, y6)
+        # 11. Non-numeric/infinite y
+        X7 = np.array([[1, 2], [3, 4]])
+        y7 = np.array([1, np.inf])
+        with pytest.raises(ValueError, match="y contains non-numeric or infinite values"):
+            model.fit(X7, y7)
+        # 12. n_samples < n_features + 1 warning
+        y8 = np.array([1, 2])
+        with pytest.warns(UserWarning, match=r"Number of samples \(2\) should be greater than number of features \(3\)"):
+            model.fit(mismatched_feature_count_2d, y8)
+        # 13. Unsupported method
+        with pytest.raises(ValueError, match="method must be 'gradient_descent' or 'normal_equation'"):
+            model.fit(X, y, method="unsupported")
+        # 14. TypeError in predict for non-numeric X
+        model.fit(X, y)
+        X_bad = X.astype(object)
+        X_bad[0, 0] = None
+        with pytest.raises(ValueError, match="non-numeric or infinite"):
+            model.predict(X_bad)
+        # 15. TypeError branch in predict for non-numeric X (guaranteed)
+        model.fit(X, y)
+        X_typeerror = np.array([[1, "string"]], dtype=object)
+        X_typeerror = np.vstack([X_typeerror, np.array([[2, 3]], dtype=object)])
+        with pytest.raises(ValueError, match="non-numeric or infinite"):
+            model.predict(X_typeerror)
