@@ -74,7 +74,7 @@ class PolynomialRegression:
         self.is_fitted_ = False
         self.n_features_ = None
 
-    def fit(self, X, y, method="gradient_descent"):  # pragma: no cover
+    def fit(self, X, y, method="gradient_descent"):
         """Fit the polynomial regression model to training data.
 
         Args:
@@ -112,7 +112,7 @@ class PolynomialRegression:
 
         return self
 
-    def predict(self, X):  # pragma: no cover
+    def predict(self, X):
         """Make predictions using the trained model.
 
         Args:
