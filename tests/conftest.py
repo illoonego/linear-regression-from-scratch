@@ -114,6 +114,7 @@ def mismatched_feature_count_2d():
     """2D array with 3 features for feature count mismatch test."""
     return np.array([[1, 2, 3], [4, 5, 6]])
 
+
 # Quadratic data fixture
 @pytest.fixture
 def quadratic_data():
@@ -121,6 +122,7 @@ def quadratic_data():
     X = np.array([[1], [2], [3], [4], [5]])
     y = 2 * X.flatten() ** 2 + 3 * X.flatten() + 1
     return X, y
+
 
 # Cubic data fixture
 @pytest.fixture

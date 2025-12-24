@@ -10,6 +10,7 @@ from itertools import combinations_with_replacement
 
 from .linear_regression import LinearRegression
 
+
 class PolynomialRegression:
     """Polynomial Regression implementation from scratch.
 
@@ -46,7 +47,7 @@ class PolynomialRegression:
             fit_intercept (bool): Whether to fit intercept term
             verbose (bool): Whether to print progress during training
         """
-        
+
         # ===== INPUT VALIDATION =====
         # Basic validation
         if not isinstance(degree, int):
@@ -57,17 +58,14 @@ class PolynomialRegression:
         # Warning validation
         if degree > 10:
             warnings.warn("Using a high degree may lead to overfitting")
-        
+
         # ===== INITIALIZATION =====
         # Store hyperparameters
         self.degree = degree
 
         # Initialize underlying linear regression model
         self.linear_model_ = LinearRegression(
-            learning_rate=learning_rate,
-            n_iterations=n_iterations,
-            fit_intercept=fit_intercept,
-            verbose=verbose
+            learning_rate=learning_rate, n_iterations=n_iterations, fit_intercept=fit_intercept, verbose=verbose
         )
 
         # Initialize state
@@ -97,10 +95,10 @@ class PolynomialRegression:
             raise ValueError("y must be a 1D array")
         if X.shape[0] != y.shape[0]:
             raise ValueError("Number of samples in X and y must be equal")
-        
+
         # Store the number of original features for later validation
         self.n_features_ = X.shape[1]
-        
+
         # === TRANSFORM FEATURES ===
         X_poly = self._create_polynomial_features(X)
 
@@ -121,23 +119,23 @@ class PolynomialRegression:
         Returns:
             np.ndarray: Predictions of shape (n_samples,)
         """
-        
+
         # ===== INPUT VALIDATION =====
         # Checjk if model is fitted
         if not self.is_fitted_:
             raise ValueError("Model has not been fitted yet. Call fit() first.")
-        
+
         # Convert X to numpy array
         X = np.array(X)
 
         # Check dimensions
         if X.ndim != 2:
             raise ValueError(f"X must be a 2D array, got {X.ndim}D array instead")
-        
+
         # Check that X is the same number of features as training data
         if X.shape[1] != self.n_features_:
             raise ValueError(f"Input features have {X.shape[1]} columns, but model was trained with {self.n_features_} features.")
-        
+
         # === TRANSFORM FEATURES ===
         X_poly = self._create_polynomial_features(X)
 

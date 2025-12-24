@@ -5,6 +5,7 @@ import pytest
 
 from linear_regression.models.polynomial_regression import PolynomialRegression
 
+
 class TestPolynomialRegression:
     """Test cases for PolynomialRegression class."""
 
