@@ -12,6 +12,7 @@ from linear_regression.preprocessing import StandardScaler
 from linear_regression.metrics import r2_score, mean_squared_error
 from linear_regression.utils import train_test_split
 
+
 def example_polynomial_fit():
     """Example of polynomial regression with synthetic nonlinear data."""
     print("\nPolynomial Regression Example")
@@ -63,11 +64,13 @@ def example_polynomial_fit():
     plt.tight_layout()
     plt.show()
 
+
 def main():
     """Run polynomial regression example."""
     print("\nPolynomial Regression from Scratch - Example")
     print("=" * 50)
     example_polynomial_fit()
+
 
 if __name__ == "__main__":
     main()
