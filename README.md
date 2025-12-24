@@ -114,15 +114,31 @@ print(f"Intercept: {model.weights_[0]}")
 print(f"R² Score: {r2_score(price, predictions):.4f}")
 ```
 
+#### Polynomial Regression Example
+```python
+import numpy as np
+from linear_regression import PolynomialRegression, r2_score
+
+X = np.array([[1], [2], [3], [4], [5]])
+y = np.array([1, 4, 9, 16, 25])  # y = x^2
+model = PolynomialRegression(degree=2)
+model.fit(X, y)
+predictions = model.predict(X)
+print(f"Predictions: {predictions}")
+print(f"R² Score: {r2_score(y, predictions):.4f}")
+```
+
 ## 📊 Current Features
 
 ### ✅ Implemented & Tested
- **LinearRegression**: Complete implementation with both gradient descent and normal equation (closed-form solution)
- **StandardScaler**: Feature standardization with robust validation  
- **Examples**: Working 1D and 2D regression demonstrations
- **Error Handling**: Comprehensive input validation and edge case management
- **Verbose Training Output**: Control progress printing with the `verbose` flag
- **Professional Structure**: PyPI-ready package with proper metadata
+- **LinearRegression**: Complete implementation with both gradient descent and normal equation (closed-form solution)
+- **PolynomialRegression**: Full implementation with feature expansion, robust input validation, and edge case handling
+- **StandardScaler**: Feature standardization with robust validation
+- **Metrics**: r2_score, mean_squared_error, mean_absolute_error (100% coverage)
+- **Examples**: Working 1D, 2D, and polynomial regression demonstrations
+- **Error Handling**: Comprehensive input validation and edge case management
+- **Verbose Training Output**: Control progress printing with the `verbose` flag
+- **Professional Structure**: PyPI-ready package with proper metadata
 
 ### 🚧 Planned Features  
 See the [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/DEVELOPMENT.md) for the full roadmap and planned features.
@@ -131,17 +147,10 @@ See the [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scr
 
 ### Run Tests & Coverage
 ```bash
-# Run all tests
-pytest tests/
-
-# Run with coverage (see missing lines in terminal)
-pytest --cov=src/linear_regression --cov-report=term-missing
-
-# Run specific test file
-pytest tests/test_linear_regression.py -v
+# Run all tests and coverage
+pytest --cov=src/linear_regression tests/ -v
+# Coverage: LinearRegression 99%, PolynomialRegression & metrics 100%
 ```
-
-
 ### Continuous Integration & Delivery (CI/CD)
 This project uses GitHub Actions for:
 - **CI:** Automatic tests, linting (ruff), formatting checks (black), and coverage reporting on every push and pull request. See `.github/workflows/python-ci.yml`.
@@ -214,12 +223,20 @@ Error:   size=0.13, bedroom=10.77, intercept=145.67
 ## 🎓 Educational Value
 
 This project demonstrates:
-- **Mathematical Understanding**: Implement algorithms from equations
+- **Mathematical Understanding**: Implement algorithms from equations, including polynomial feature expansion
 - **Software Engineering**: Professional Python package development
-- **Machine Learning**: Core concepts without library abstractions  
+- **Machine Learning**: Core concepts without library abstractions
 - **Numerical Computing**: Efficient NumPy vectorized operations
-- **Testing**: Comprehensive test coverage with edge cases
+- **Testing**: Comprehensive test coverage with edge cases and fixtures
 - **Documentation**: Clear code documentation and user guides
+
+## 📏 Metrics Usage Example
+```python
+from linear_regression import r2_score, mean_squared_error, mean_absolute_error
+print(r2_score(y, predictions))
+print(mean_squared_error(y, predictions))
+print(mean_absolute_error(y, predictions))
+```
 
 ## 🤝 Contributing
 

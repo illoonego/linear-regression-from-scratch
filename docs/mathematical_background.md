@@ -142,102 +142,27 @@ where $\nabla J^{(i)}(\boldsymbol{\beta}) = (\hat{y}^{(i)} - y^{(i)}) \mathbf{x}
 
 ## Polynomial Regression
 
-Transform features to fit non-linear relationships:
-$$
-y = \beta_0 + \beta_1 x + \beta_2 x^2 + \ldots + \beta_d x^d + \epsilon
-$$
+Polynomial regression extends linear regression by expanding the feature space to include powers and cross-terms of the original features. For degree $d$ and $n$ features, the number of polynomial features grows combinatorially.
 
-For multiple features, create polynomial and interaction terms.
+### Polynomial Feature Expansion
+Given $X$ with $n$ features, polynomial features up to degree $d$ are generated using all combinations (with replacement) of the original features:
 
-## Model Evaluation
+```math
+\text{For degree } d=2, n=2:
+\begin{bmatrix}
+x_1 & x_2 \\
+\end{bmatrix}
+\rightarrow
+\begin{bmatrix}
+1 & x_1 & x_2 & x_1^2 & x_1 x_2 & x_2^2
+\end{bmatrix}
+```
 
-### $R^2$ (Coefficient of Determination)
-$$
-R^2 = 1 - \frac{SS_{res}}{SS_{tot}} = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
-$$
+### Matrix Form
+The expanded feature matrix $\mathbf{X}_{poly}$ is used in the same way as in linear regression:
+```math
+\mathbf{y} = \mathbf{X}_{poly} \boldsymbol{\beta} + \boldsymbol{\epsilon}
+```
 
-### Mean Squared Error (MSE)
-$$
-MSE = \frac{1}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i)^2
-$$
-
-### Mean Absolute Error (MAE)
-$$
-MAE = \frac{1}{m} \sum_{i=1}^{m} |y_i - \hat{y}_i|
-$$
-
-## Implementation Considerations
-
-### Feature Scaling
-
-For gradient descent, scale features for faster convergence:
-- **Standardization**: $x' = \frac{x - \mu}{\sigma}$
-- **Normalization**: $x' = \frac{x - x_{min}}{x_{max} - x_{min}}$
-
-### Regularization
-
-Reduce overfitting, especially for polynomials:
-
-**Ridge (L2):**
-$$J(\boldsymbol{\beta}) = \frac{1}{2m} \|\mathbf{X}\boldsymbol{\beta} - \mathbf{y}\|^2 + \lambda \|\boldsymbol{\beta}\|^2$$
-
-**Lasso (L1):**
-$$J(\boldsymbol{\beta}) = \frac{1}{2m} \|\mathbf{X}\boldsymbol{\beta} - \mathbf{y}\|^2 + \lambda \|\boldsymbol{\beta}\|_1$$
-
-### Bias-Variance Tradeoff
-
-- **High Bias, Low Variance**: Underfitting
-- **Low Bias, High Variance**: Overfitting
-- **Goal**: Balance for generalization
-Polynomial regression extends linear regression by transforming features:
-
-$$y = \beta_0 + \beta_1 x + \beta_2 x^2 + \ldots + \beta_d x^d + \epsilon$$
-
-For multiple features, we can create polynomial features:
-- $x_1, x_2$ (original features)
-- $x_1^2, x_2^2$ (squared terms)
-- $x_1 x_2$ (interaction terms)
-- Higher-order terms...
-
-## Model Evaluation
-
-### R-squared (Coefficient of Determination)
-
-$$R^2 = 1 - \frac{SS_{res}}{SS_{tot}} = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}$$
-
-Where:
-- $SS_{res}$ is the sum of squared residuals
-- $SS_{tot}$ is the total sum of squares
-- $\bar{y}$ is the mean of observed values
-
-### Mean Squared Error (MSE)
-
-$$MSE = \frac{1}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i)^2$$
-
-### Mean Absolute Error (MAE)
-
-$$MAE = \frac{1}{m} \sum_{i=1}^{m} |y_i - \hat{y}_i|$$
-
-## Implementation Considerations
-
-### Feature Scaling
-
-For gradient descent, it's often beneficial to scale features:
-- **Standardization**: $x' = \frac{x - \mu}{\sigma}$
-- **Normalization**: $x' = \frac{x - x_{min}}{x_{max} - x_{min}}$
-
-### Regularization
-
-To prevent overfitting, especially in polynomial regression:
-
-**Ridge Regression (L2):**
-$$J(\boldsymbol{\beta}) = \frac{1}{2m} \|\mathbf{X}\boldsymbol{\beta} - \mathbf{y}\|^2 + \lambda \|\boldsymbol{\beta}\|^2$$
-
-**Lasso Regression (L1):**
-$$J(\boldsymbol{\beta}) = \frac{1}{2m} \|\mathbf{X}\boldsymbol{\beta} - \mathbf{y}\|^2 + \lambda \|\boldsymbol{\beta}\|_1$$
-
-### Bias-Variance Tradeoff
-
-- **High Bias, Low Variance**: Underfitting (model too simple)
-- **Low Bias, High Variance**: Overfitting (model too complex)
-- **Goal**: Find the right balance for good generalization
+### Overfitting Warning
+High-degree polynomials can fit training data perfectly but generalize poorly. The implementation issues a warning for degrees > 10.

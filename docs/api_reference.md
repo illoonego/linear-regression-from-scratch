@@ -68,10 +68,39 @@ predictions = model.predict(X)
 ## linear_regression.models.polynomial_regression
 
 ### PolynomialRegression
-**Not implemented.** All methods are stubs and raise NotImplementedError.
+```python
+class PolynomialRegression(degree=2, learning_rate=0.01, n_iterations=1000, fit_intercept=True)
+```
+Implements polynomial regression by expanding features and fitting a LinearRegression model.
+
+**Parameters:**
+- `degree` (int, default=2): Degree of polynomial features
+- `learning_rate` (float, default=0.01): Step size for gradient descent
+- `n_iterations` (int, default=1000): Number of iterations for gradient descent
+- `fit_intercept` (bool, default=True): Whether to include an intercept term
+
+**Attributes:**
+- `linear_model_`: Underlying LinearRegression instance
+- `is_fitted_`: True if model has been fitted
+- `n_features_`: Number of original features
+
+**Methods:**
+- `fit(X, y, method="gradient_descent"|"normal_equation")`
+- `predict(X)`
+- `_create_polynomial_features(X)`
 
 **Limitations:**
-- All methods raise NotImplementedError.
+- No built-in regularization
+- High-degree polynomials may overfit (warning issued)
+
+**Example:**
+```python
+X = np.array([[1], [2], [3], [4], [5]])
+y = np.array([1, 4, 9, 16, 25])
+model = PolynomialRegression(degree=2)
+model.fit(X, y)
+predictions = model.predict(X)
+```
 
 ---
 
@@ -152,49 +181,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 ```
 ## linear_regression.metrics
 
-### r2_score
-```python
-r2_score(y_true, y_pred)
-```
-Returns the coefficient of determination $R^2$.
-
-**Parameters:**
-- `y_true` (np.ndarray, shape (n_samples,)): True values
-- `y_pred` (np.ndarray, shape (n_samples,)): Predicted values
-
-**Returns:** float
-
-**Raises:**
-- ValueError: If input shapes are invalid
-
-### mean_squared_error
-```python
-mean_squared_error(y_true, y_pred)
-```
-
-**Parameters:**
-- `y_true` (np.ndarray, shape (n_samples,)): True values
-- `y_pred` (np.ndarray, shape (n_samples,)): Predicted values
-
-**Returns:** float
-
-**Raises:**
-- ValueError: If input shapes are invalid
-
-### mean_absolute_error
-```python
-mean_absolute_error(y_true, y_pred)
-```
-Returns the mean absolute error.
-
-**Parameters:**
-- `y_true` (np.ndarray, shape (n_samples,)): True values
-- `y_pred` (np.ndarray, shape (n_samples,)): Predicted values
-
-**Returns:** float
-
-**Raises:**
-- ValueError: If input shapes are invalid
+### r2_score, mean_squared_error, mean_absolute_error
+All metrics are fully implemented and tested. See README for usage examples.
 
 ## Error Handling
 
