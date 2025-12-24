@@ -4,12 +4,12 @@ This example demonstrates how to use the PolynomialRegression class
 for fitting nonlinear data and visualizing the model fit.
 """
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
+from linear_regression.metrics import mean_squared_error, r2_score
 from linear_regression.models.polynomial_regression import PolynomialRegression
 from linear_regression.preprocessing import StandardScaler
-from linear_regression.metrics import r2_score, mean_squared_error
 from linear_regression.utils import train_test_split
 
 
@@ -46,7 +46,7 @@ def example_polynomial_fit():
     # Evaluate performance
     r2 = r2_score(y_test, y_pred)
     mse = mean_squared_error(y_test, y_pred)
-    print(f"\nResults:")
+    print("\nResults:")
     print(f"Testing Set - R² Score: {r2:.4f}, MSE: {mse:.4f}")
 
     # Visualize model fit

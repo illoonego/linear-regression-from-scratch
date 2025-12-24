@@ -74,6 +74,7 @@ class TestLinearRegression:
 
     def test_fit_normal_equation_edge_cases(self):
         import numpy as np
+
         from linear_regression.models.linear_regression import LinearRegression
 
         # Singular matrix: duplicate columns

@@ -5,8 +5,9 @@ polynomial regression by extending linear regression with polynomial features.
 """
 
 import warnings
-import numpy as np
 from itertools import combinations_with_replacement
+
+import numpy as np
 
 from .linear_regression import LinearRegression
 
