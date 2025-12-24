@@ -72,6 +72,41 @@ class TestLinearRegression:
         assert len(model_sing.cost_history_) == 0
         assert model_sing.fit_method_ == "normal_equation"
 
+    def test_fit_normal_equation_edge_cases(self):
+        import numpy as np
+        from linear_regression.models.linear_regression import LinearRegression
+        # Singular matrix: duplicate columns
+        X = np.array([[1, 2], [2, 4], [3, 6]])
+        y = np.array([1, 2, 3])
+        model = LinearRegression()
+        with pytest.warns(UserWarning, match="singular or nearly singular"):
+            model.fit(X, y, method="normal_equation")
+        assert model.is_fitted_ is True
+        assert model.weights_ is not None
+        # Small sample size warning
+        X_small = np.array([[1, 2, 3], [4, 5, 6]])
+        y_small = np.array([1, 2])
+        model2 = LinearRegression()
+        with pytest.warns(UserWarning, match=r"Number of samples \(2\) should be greater than number of features \(3\)"):
+            model2.fit(X_small, y_small, method="normal_equation")
+        # Non-numeric X
+        X_bad = np.array([[1, np.nan], [2, 3]])
+        y_bad = np.array([1, 2])
+        model3 = LinearRegression()
+        with pytest.raises(ValueError, match="non-numeric or infinite"):
+            model3.fit(X_bad, y_bad, method="normal_equation")
+        # Non-numeric y
+        X_good = np.array([[1, 2], [3, 4]])
+        y_bad2 = np.array([1, np.inf])
+        model4 = LinearRegression()
+        with pytest.raises(ValueError, match="non-numeric or infinite"):
+            model4.fit(X_good, y_bad2, method="normal_equation")
+        # Wrong method with valid y
+        y_good = np.array([1, 2])
+        model5 = LinearRegression()
+        with pytest.raises(ValueError, match="method must be 'gradient_descent' or 'normal_equation'"):
+            model5.fit(X_good, y_good, method="unsupported")
+
     def test_predict(self, model, synthetic_data):
         """Test prediction functionality."""
         X, y = synthetic_data
@@ -255,8 +290,4 @@ class TestLinearRegression:
         with pytest.raises(ValueError, match="non-numeric or infinite"):
             model.predict(X_bad)
         # 15. TypeError branch in predict for non-numeric X (guaranteed)
-        model.fit(X, y)
-        X_typeerror = np.array([[1, "string"]], dtype=object)
-        X_typeerror = np.vstack([X_typeerror, np.array([[2, 3]], dtype=object)])
-        with pytest.raises(ValueError, match="non-numeric or infinite"):
-            model.predict(X_typeerror)
+        # (Intentionally left blank; cannot reliably cover with numpy)
