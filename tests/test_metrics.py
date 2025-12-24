@@ -79,8 +79,6 @@ def test_mae_constant_arrays(constant_arrays):
 
 
 def test_mse_input_validation(mismatched_arrays, empty_arrays):
-    import pytest
-
     y_true, y_pred = mismatched_arrays
     with pytest.raises(ValueError, match="y_true and y_pred must have the same shape"):
         mean_squared_error(y_true, y_pred)
@@ -91,8 +89,6 @@ def test_mse_input_validation(mismatched_arrays, empty_arrays):
 
 
 def test_mae_input_validation(mismatched_arrays, empty_arrays):
-    import pytest
-
     y_true, y_pred = mismatched_arrays
     with pytest.raises(ValueError, match="y_true and y_pred must have the same shape"):
         mean_absolute_error(y_true, y_pred)
@@ -110,3 +106,32 @@ def test_mse_non_arrays(non_array_inputs):
 def test_mae_non_arrays(non_array_inputs):
     y_true, y_pred = non_array_inputs
     assert mean_absolute_error(y_true, y_pred) == mean_absolute_error(np.array(y_true), np.array(y_pred))
+
+
+def test_metrics_tuple_input():
+    # Tuple input should be converted to numpy arrays and work
+    y_true = (1, 2, 3)
+    y_pred = (1, 2, 3)
+    assert r2_score(y_true, y_pred) == 1.0
+    assert mean_squared_error(y_true, y_pred) == 0.0
+    assert mean_absolute_error(y_true, y_pred) == 0.0
+
+
+def test_metrics_shape_mismatch():
+    # Shape mismatch should raise ValueError
+    with pytest.raises(ValueError):
+        r2_score([1, 2, 3], [1, 2])
+    with pytest.raises(ValueError):
+        mean_squared_error([1, 2, 3], [1, 2])
+    with pytest.raises(ValueError):
+        mean_absolute_error([1, 2, 3], [1, 2])
+
+
+def test_metrics_empty_arrays():
+    # Empty arrays should raise ValueError
+    with pytest.raises(ValueError):
+        r2_score([], [])
+    with pytest.raises(ValueError):
+        mean_squared_error([], [])
+    with pytest.raises(ValueError):
+        mean_absolute_error([], [])
