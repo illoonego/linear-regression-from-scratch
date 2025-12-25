@@ -16,18 +16,17 @@ This project implements linear regression algorithms **from first principles** w
 
 ## 📁 Project Architecture
 
-See the full project architecture in [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/DEVELOPMENT.md).
+See the full project architecture in [CONTRIBUTING.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/CONTRIBUTING.md).
 
 ## 📐 Mathematical Background
 
-For a detailed explanation of the mathematical foundations behind linear regression, see [mathematical_background.md](docs/mathematical_background.md).
+For a detailed explanation of the mathematical foundations behind linear regression, see [mathematical_background.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/docs/mathematical_background.md).
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Python 3.8+ 
 - pip package manager
-
 
 
 ### Installation
@@ -52,16 +51,26 @@ pip install -e .[dev]
 pip install -e ".[notebooks,docs]"
 ```
 
-> **Note:** All dependencies are managed via `pyproject.toml`. The legacy `requirements.txt` file has been removed for clarity and modern Python packaging best practices.
+> **Note:** All dependencies are managed via `pyproject.toml`.
 
 ### Running Examples
+
+Linear Regression Usage Examples:
+
 ```bash
 # Run all examples
-python examples/basic_linear_regression.py
+python examples/linear_example.py
 
 # Run specific examples
-python examples/basic_linear_regression.py 1d    # Simple regression
-python examples/basic_linear_regression.py 2d    # Multiple regression
+python examples/linear_example.py 1d    # Simple regression
+python examples/linear_example.py 2d    # Multiple regression
+```
+
+Polynomial Regression Usage Examples:
+
+```bash
+# Run all examples
+python examples/polynomial_example.py
 ```
 
 ### Basic Usage
@@ -141,7 +150,11 @@ print(f"R² Score: {r2_score(y, predictions):.4f}")
 - **Professional Structure**: PyPI-ready package with proper metadata
 
 ### 🚧 Planned Features  
-See the [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/DEVELOPMENT.md) for the full roadmap and planned features.
+See the [CONTRIBUTING.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/CONTRIBUTING.md) for the full roadmap and planned features.
+
+## 🛠️ For GitHub Users & Contributors
+
+The following sections are relevant for users who clone the repository from GitHub (not for PyPI package users):
 
 ## 🧪 Testing & Development
 
@@ -151,6 +164,7 @@ See the [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scr
 pytest --cov=src/linear_regression tests/ -v
 # Coverage: LinearRegression 99%, PolynomialRegression & metrics 100%
 ```
+
 ### Continuous Integration & Delivery (CI/CD)
 This project uses GitHub Actions for:
 - **CI:** Automatic tests, linting (ruff), formatting checks (black), and coverage reporting on every push and pull request. See `.github/workflows/python-ci.yml`.
@@ -158,7 +172,7 @@ This project uses GitHub Actions for:
 
 **How releases work:**
 - When a new version tag (e.g., `v1.0.0`) is pushed, the CD workflow builds and publishes the package to PyPI using secure repository secrets.
-- See [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/DEVELOPMENT.md) for more on the release workflow.
+- See [CONTRIBUTING.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/CONTRIBUTING.md) for more on the release workflow.
 
 ### Code Quality
 ```bash
@@ -181,7 +195,7 @@ pip install -e ".[dev,notebooks,docs]"
 ## 🎯 Example Output
 
 ```bash
-$ python examples/basic_linear_regression.py 2d
+$ python examples/linear_example.py 2d
 
 2D Multiple Linear Regression Example
 ----------------------------------------
@@ -220,6 +234,14 @@ Learned: size=149.87, bedroom=9989.23, intercept=20145.67
 Error:   size=0.13, bedroom=10.77, intercept=145.67
 ```
 
+## 📏 Metrics Usage Example
+```python
+from linear_regression import r2_score, mean_squared_error, mean_absolute_error
+print(r2_score(y, predictions))
+print(mean_squared_error(y, predictions))
+print(mean_absolute_error(y, predictions))
+```
+
 ## 🎓 Educational Value
 
 This project demonstrates:
@@ -230,19 +252,10 @@ This project demonstrates:
 - **Testing**: Comprehensive test coverage with edge cases and fixtures
 - **Documentation**: Clear code documentation and user guides
 
-## 📏 Metrics Usage Example
-```python
-from linear_regression import r2_score, mean_squared_error, mean_absolute_error
-print(r2_score(y, predictions))
-print(mean_squared_error(y, predictions))
-print(mean_absolute_error(y, predictions))
-```
-
 ## 🤝 Contributing
 
 We welcome contributions! Please see:
 - [CONTRIBUTING.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/CONTRIBUTING.md) for guidelines and onboarding
-- [DEVELOPMENT.md](https://github.com/illoonego/linear-regression-from-scratch/blob/main/DEVELOPMENT.md) for development workflow
 - [Issues](https://github.com/illoonego/linear-regression-from-scratch/issues) for bug reports and feature requests
 
 ## 🙏 Acknowledgments
