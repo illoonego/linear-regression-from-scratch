@@ -77,10 +77,6 @@ Where:
 - $\boldsymbol{\beta}$ is the vector of all coefficients
 - $\boldsymbol{\epsilon}$ is the vector of errors
 
-**Visualization:**
-- Scatter plot with each point representing an equation.
-- Animation: Show how all points contribute to the system.
-
 ## Why Matrix Form?
 
 Matrix notation enables:

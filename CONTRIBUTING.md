@@ -1,10 +1,15 @@
 # Contributing to linear-regression-from-scratch
 
-Thank you for your interest in contributing! This guide will help you get started and ensure a smooth development experience for everyone.
+This document provides all the information needed for smooth development and collaboration on the linear-regression-from-scratch project! This guide will help you get started and ensure a smooth development experience for everyone.
 
 ---
 
 ## Getting Started Guide
+
+0. **Environment**
+- Python 3.8+
+- All dependencies managed via `pyproject.toml` (PEP 621)
+- No `requirements.txt` or `setup.py` required
 
 1. **Clone the Repository**
   ```bash
@@ -23,45 +28,102 @@ Thank you for your interest in contributing! This guide will help you get starte
   pip install -e ".[dev,notebooks,docs]"
   ```
 4. **Use Top-Level Imports**
-   - When writing examples, tests, or documentation, use top-level imports for public API:
-     ```python
-     from linear_regression import LinearRegression, PolynomialRegression, StandardScaler, r2_score, mean_squared_error, mean_absolute_error, train_test_split
-     ```
-4. **Run Tests & Coverage**
-   ```bash
-   pytest --cov=src/linear_regression tests/ -v
-   # Coverage: LinearRegression 99%, PolynomialRegression & metrics 100%
-   ```
-5. **Format, Lint, and Check Code**
-  ```bash
-  black .
-  isort .
-  ruff .
+  - When writing examples, tests, or documentation, use top-level imports for public API:
+  ```python
+  from linear_regression import LinearRegression, PolynomialRegression, StandardScaler, r2_score, mean_squared_error, mean_absolute_error, train_test_split
   ```
-6. **Explore Examples and Notebooks**
+4. **Run Tests & Coverage**
+  ```bash
+  pytest                                       # for all tests
+  pytest --cov=src/linear_regression tests/ -v # for coverage
+  ```
+5. **Format, Lint, and Check Code**
+  - Run `black .` to auto-format code
+  - Run `isort .` to sort imports
+  - Run `ruff .` for fast linting and code style checks
+
+6. **Continuous Integration & Delivery (CI/CD):**
+  - All pushes and pull requests are checked by GitHub Actions for tests, lint, and coverage (`python-ci.yml`).
+  - Releases are published to PyPI automatically when a new version tag (e.g., `v1.0.0`) is pushed (`pypi-cd.yml`).
+  - Test releases are published to TestPyPI automatically when a test tag (e.g., `test-v1.0.0`) is pushed (`testpypi-cd.yml`).
+  - PyPI credentials are stored securely as GitHub repository secrets (`PYPI_API_TOKEN`).
+  - See `.github/workflows/` for workflow files.
+
+7. **Explore Examples and Notebooks**
   - See the `examples/` and `notebooks/` folders for usage and visualizations.
+
+---
+
+## Mathematical Background
+
+For theory and equations, see [docs/mathematical_background.md](docs/mathematical_background.md).
 
 ---
 
 ## Architecture Overview
 
-**Main Components:**
-- `src/linear_regression/`: Core package
-  - `models/`: Model implementations (LinearRegression, PolynomialRegression)
-  - `preprocessing.py`: Feature scaling utilities
-  - `utils.py`: Data splitting and helpers
-  - `metrics.py`: Evaluation metrics (fully tested)
-- `tests/`: Unit and integration tests
-- `examples/`: Usage scripts and sample data
-- `notebooks/`: Jupyter notebooks for tutorials and visualization
-- `docs/`: Documentation (API reference, mathematical background)
+```
+linear-regression-from-scratch/
+├── README.md                       ← Project overview & usage
+├── pyproject.toml                  ← Dependencies & package configuration (PEP 621)
+├── LICENSE                         ← MIT License
+├── src/
+│   └── linear_regression/
+│       ├── __init__.py             ← Package initialization
+│       ├── models/
+│       │   ├── __init__.py
+│       │   ├── linear_regression.py    ← ✅ LinearRegression (complete)
+│       │   └── polynomial_regression.py ← ✅ PolynomialRegression (complete)
+│       ├── preprocessing.py        ← ✅ StandardScaler (complete)
+│       ├── utils.py                ← ✅ train_test_split (complete)
+│       └── metrics.py              ← ✅ Metrics (R², MSE, MAE)
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py                 ← ✅ Shared pytest fixtures for all tests
+│   ├── test_linear_regression.py   ← ✅ LinearRegression tests
+│   ├── test_metrics.py             ← ✅ Metrics tests
+│   ├── test_polynomial_regression.py ← ✅ PolynomialRegression tests
+│   ├── test_preprocessing.py       ← ✅ Preprocessing tests
+│   └── test_utils.py               ← ✅ Utils tests
+├── examples/                       ← 🚧 Usage Example (In Progress)
+│   ├── linear_example.py           ← ✅ Linear regression example
+│   ├── polynomial_example.py       ← ✅ Polynomial regression example
+│   └── data/                       ← Sample datasets
+├── notebooks/                      ← 🚧 Jupyter tutorials (In Progress)
+├── docs/
+│   ├── mathematical_background.md  ← Theory and equations
+│   └── api_reference.md            ← API documentation
+├── DEVELOPMENT.md                  ← Development workflow
+├── CONTRIBUTING.md                 ← Contribution guidelines
+└── .github/
+     └── workflows/
+        ├── python-ci.yml           ← CI: tests, lint, coverage
+        ├── pypi-cd.yml             ← CD: PyPI publishing
+        └── testpypi-cd.yml         ← CD: TestPyPI publishing
+```
 
-**Data Flow:**
-1. Data Preparation: Load and preprocess data (scaling, splitting)
-2. Model Training: Fit models using gradient descent or normal equation
-3. Prediction: Use trained models to predict new data
-4. Evaluation: Assess model performance with metrics
-5. Visualization: Use notebooks for visual analysis
+**Legend**: ✅ Complete | 🚧 Planned/In Progress | (optional/expandable)
+
+---
+
+## Implementation Checklist (TODO)
+
+### Core Features
+- [x] `train_test_split` utility
+- [x] `StandardScaler` for feature scaling
+- [x] LinearRegression (gradient descent & normal equation)
+- [x] PolynomialRegression (feature transformation, integration)
+- [x] Comprehensive test suite (all modules)
+- [x] Visual examples in examples/
+- [x] Documentation and README
+
+### Roadmap & Planned Features
+- [ ] Advanced optimizers (SGD, Mini-batch GD, Adam)
+- [ ] Regularization (Ridge, Lasso)
+- [ ] Visualization tools (plotting utilities)
+- [ ] Jupyter tutorials (notebooks/)
+- [ ] Real dataset examples
+- [ ] Cross-validation
 
 ---
 
@@ -90,12 +152,13 @@ For questions or concerns, contact the project maintainer.
   - `isort .`
   - `ruff .`
 - **Run all tests** with `pytest` and ensure coverage is maintained.
-- **Push your branch** and open a pull request (PR) with a clear description.
-- **Participate in code review** and address feedback promptly.
+- **Push your branch** and open a pull request (PR) with a clear, descriptive summary of your changes.
+- **Participate in code review** and address feedback promptly and respectfully.
 
 ---
 
 ## Code Style & Quality
+
 
 - Use [Black](https://black.readthedocs.io/) for formatting.
 - Use [Ruff](https://docs.astral.sh/ruff/) for linting.
@@ -103,6 +166,18 @@ For questions or concerns, contact the project maintainer.
 - Write clear, concise docstrings and comments.
 - Add or update tests for all new features and bug fixes.
 - Use correct naming: `StandardScaler` (not `StandartScaler`).
+
+---
+
+## Naming Conventions
+
+- **Classes:** Use `CamelCase` (e.g., `LinearRegression`, `PolynomialRegression`, `StandardScaler`)
+- **Functions/Methods:** Use `snake_case` (e.g., `fit`, `predict`, `train_test_split`)
+- **Variables:** Use `snake_case` (e.g., `learning_rate`, `num_iterations`)
+- **Constants:** Use `UPPER_CASE` (e.g., `DEFAULT_SEED`)
+- Be descriptive but concise; avoid abbreviations unless well-known.
+
+---
 
 ---
 
@@ -126,7 +201,6 @@ For questions or concerns, contact the project maintainer.
 
 ## Tips for Contributors
 
-- Read the [DEVELOPMENT.md](DEVELOPMENT.md) for workflow and setup details.
 - Check the TODO list and open issues for tasks.
 - Ask questions via Issues or Discussions if you need help.
 - Be respectful and collaborative in all interactions.
@@ -140,8 +214,6 @@ This project uses GitHub Actions for:
 - **CD:**
   - **PyPI:** Automated publishing to PyPI on new version tags. See `.github/workflows/pypi-cd.yml`.
   - **TestPyPI:** Automated publishing to TestPyPI on test tags (e.g., `test-v1.0.0`). See `.github/workflows/testpypi-cd.yml`.
-
-Refer to [DEVELOPMENT.md](DEVELOPMENT.md) for more on the release workflow.
 
 ---
 
